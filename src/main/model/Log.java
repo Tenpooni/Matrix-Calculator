@@ -25,4 +25,8 @@ public class Log {
         }
         return logList;
     }
+
+    public String getLogList(int i) {
+        return logList.get(i);
+    }
 }

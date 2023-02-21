@@ -223,10 +223,10 @@ public class Matrix {
                     selection = input.next();
                 }
                 tempVal = Integer.parseInt(selection);
-                tempRow.initializeRow(j, tempVal);
+                tempRow.setRow(j, tempVal);
                 isInt = false;
             }
-            this.matrix.initializeColumn(i, tempRow);
+            this.matrix.setColumn(i, tempRow);
         }
     }
 }

@@ -21,20 +21,12 @@ public class Row {
         return line;
     }
 
-    public void initializeRow(int i, float val) {
-        this.elements.add(i, val);
-    }
-
     public void multiply(float c) {
         for (int i = 0; i < this.columnCount; i++) {
             float num = this.elements.get(i);
             num = num * c;
             this.elements.set(i,num);
         }
-    }
-
-    public float getValue(int j) {
-        return this.elements.get(j);
     }
 
     public void addition(int i, float c) {
@@ -47,6 +39,18 @@ public class Row {
         float num = this.elements.get(i);
         num = c - num;
         this.elements.set(i,num);
+    }
+
+    public void setRow(int i, float val) {
+        this.elements.add(i, val);
+    }
+
+    public float getValue(int j) {
+        return this.elements.get(j);
+    }
+
+    public int getColumnCount() {
+        return this.columnCount;
     }
 
 }

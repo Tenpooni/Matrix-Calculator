@@ -11,10 +11,6 @@ public class Column {
         this.rowCount = rowNum;
     }
 
-    public void initializeColumn(int i, Row r) {
-        this.column.add(i, r);
-    }
-
     public ArrayList<String> columnPrint() {
         String line = "";
         ArrayList<String> lineToPrint = new ArrayList<>();
@@ -35,8 +31,9 @@ public class Column {
     public void addRow(int r1, int r2) {
         Row toAdd = this.column.get(r1);
         Row toReplace = this.column.get(r2);
+        int rowLength = toReplace.getColumnCount();
 
-        for (int i = 0; i < this.rowCount; i++) {
+        for (int i = 0; i < rowLength; i++) {
             float c = toAdd.getValue(i);
             toReplace.addition(i, c);
         }
@@ -45,8 +42,9 @@ public class Column {
     public void subtractRow(int r1, int r2) {
         Row toSubtract = this.column.get(r1);
         Row toReplace = this.column.get(r2);
+        int rowLength = toReplace.getColumnCount();
 
-        for (int i = 0; i < this.rowCount; i++) {
+        for (int i = 0; i < rowLength; i++) {
             float c = toSubtract.getValue(i);
             toReplace.subtract(i, c);
         }
@@ -55,6 +53,14 @@ public class Column {
     public void multiplyRow(int r1, float c) {
         Row toMultiply = this.column.get(r1);
         toMultiply.multiply(c);
+    }
+
+    public void setColumn(int i, Row r) {
+        this.column.add(i, r);
+    }
+
+    public Row getColumn(int i) {
+        return this.column.get(i);
     }
 
 }
