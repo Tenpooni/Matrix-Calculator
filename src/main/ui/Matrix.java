@@ -122,7 +122,7 @@ public class Matrix {
         int selected = -1;
         String selection;
 
-        while (!isInt || selected > columnCount || selected < 0) {
+        while (!isInt || selected > rowCount || selected <= 0) {
             System.out.println("Enter row:");
             isInt = input.hasNextInt();
             selection = input.next();
@@ -177,7 +177,7 @@ public class Matrix {
         String selection;
         int selected = -1;
 
-        while (!isInt || selected < 0) {
+        while (!isInt || selected <= 0) {
             System.out.println("Please enter number of rows");
             isInt = input.hasNextInt();
             selection = input.next();
@@ -194,7 +194,7 @@ public class Matrix {
         String selection;
         int selected = -1;
 
-        while (!isInt || selected < 0) {
+        while (!isInt || selected <= 0) {
             System.out.println("Please enter number of columns");
             isInt = input.hasNextInt();
             selection = input.next();

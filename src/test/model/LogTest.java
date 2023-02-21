@@ -3,7 +3,6 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,8 +12,8 @@ public class LogTest {
     private final int r1 = 5;
     private final int r2 = 2;
     private final float c = -8;
-    private final String operation1 = "+";
-    private final String line1 =  "R" + r1 + " " + operation1 + " " + "R" + r2;
+    private final String operation = "+";
+    private final String line1 =  "R" + r1 + " " + operation + " " + "R" + r2;
     private final String line2 =  "R" + r1 + " * " + c;
 
     @BeforeEach
@@ -24,31 +23,49 @@ public class LogTest {
 
     @Test
     void testEntryArithmetic() {
-        testLog.entryArithmetic(r1, r2, operation1);
-        String testString = testLog.getLogList(0);
+        testLog.entryArithmetic(r1, r2, operation);
+        String testString = testLog.getLogLine(0);
         assertEquals(testString, line1);
+        assertTrue(testLog.getLogList().contains(line1));
     }
 
     @Test
     void testEntryMultiplicative() {
         testLog.entryMultiplicative(r1, c);
-        String testString = testLog.getLogList(0);
+        String testString = testLog.getLogLine(0);
         assertEquals(testString, line2);
+        assertTrue(testLog.getLogList().contains(line2));
+    }
+
+    @Test
+    void testCheckEmptyLog() {
+        assertTrue(testLog.getLogList().isEmpty());
+        testLog.checkEmptyLog();
+        assertTrue(testLog.getLogList().contains("No operations yet"));
+
+        testLog.entryMultiplicative(r1, c);
+        testLog.checkEmptyLog();
+        assertFalse(testLog.getLogList().isEmpty());
+        assertFalse(testLog.result().contains("No operations yet"));
     }
 
     @Test
     void testResult() {
-        ArrayList<String> testEmpty = testLog.result();
-        assertEquals(testEmpty.get(0), "No operations yet");
+        assertTrue(testLog.getLogList().isEmpty());
+        ArrayList<String> resultEmpty = testLog.result();
+        assertTrue(resultEmpty.contains("No operations yet"));
+
         testLog.entryMultiplicative(r1, c);
-        String testString = testLog.getLogList(0);
-        assertEquals(testEmpty.get(0), testString);
+        assertFalse(testLog.getLogList().isEmpty());
+        ArrayList<String> result = testLog.result();
+        assertFalse(result.contains("No operations yet"));
+        assertTrue(result.contains(line2));
     }
 
     @Test
-    void getLogList() {
+    void getLogLine() {
         testLog.entryMultiplicative(r1, c);
-        String testString = testLog.getLogList(0);
-        assertEquals(testLog.getLogList(0), testString);
+        String testString = testLog.getLogLine(0);
+        assertEquals(testLog.getLogLine(0), testString);
     }
 }
