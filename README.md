@@ -26,6 +26,5 @@ enjoy being able to explore applications of programming to other fields.
 > 
 > As a user, I want to be able to add and remove numbers
 > 
-> As a user, I want to be able to check if matrix is in reduced echelon form
-> 
-> As a user, I want to be able to check if matrix is inconsistent
+> As a user, I want to be able to perform row/column operations such as swap
+
