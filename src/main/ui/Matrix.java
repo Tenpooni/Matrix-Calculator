@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
+//Matrix Calculator App
 public class Matrix {
 
     private int columnCount;
@@ -17,10 +18,13 @@ public class Matrix {
     Column matrix = new Column(rowCount);
     boolean runCalc = true;
 
+    //EFFECTS: runs Calculator application
     public Matrix() {
         runUserInterface();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes matrix setup and runs regular operation
     private void runUserInterface() {
         initiateRows();
         initiateColumns();
@@ -30,6 +34,7 @@ public class Matrix {
         runOperationMenu();
     }
 
+    //EFFECTS: Runs operations menu
     private void runOperationMenu() {
         String command = "";
 
@@ -57,6 +62,7 @@ public class Matrix {
         }
     }
 
+    //EFFECTS: Prevents double selection of same row
     private void verifyIndex(String command) {
         int r1 = verifyRowSelection() - 1;
         int r2 = -1;
@@ -71,6 +77,7 @@ public class Matrix {
         runOperations(command, r1, r2);
     }
 
+    //EFFECTS: Runs operation processes in calculator
     private void runOperations(String command, int r1, int r2) {
         switch (command) {
             case "s":
@@ -93,6 +100,7 @@ public class Matrix {
         }
     }
 
+    //EFFECTS: Runs supplement menu with history log.
     private void runSupplementMenu() {
         String command = "";
 
@@ -110,6 +118,7 @@ public class Matrix {
         }
     }
 
+    //EFFECTS: Prints out previous calculator actions
     private void printHistory() {
         ArrayList<String> lines = this.log.result();
         for (String str : lines) {
@@ -117,6 +126,7 @@ public class Matrix {
         }
     }
 
+    //EFFECTS: Ensures selected row is valid
     private int verifyRowSelection() {
         boolean isInt = false;
         int selected = -1;
@@ -133,6 +143,7 @@ public class Matrix {
         return selected;
     }
 
+    //EFFECTS: Checks entry for constant is valid
     private float verifyConstant() {
         boolean isFloat = false;
         float selected = 0;
@@ -149,6 +160,7 @@ public class Matrix {
         return selected;
     }
 
+    //EFFECTS: prints matrix and Menu options
     private void displayOperationMenu() {
         printMatrix();
         System.out.println("\nSelect from:");
@@ -159,6 +171,7 @@ public class Matrix {
         System.out.println("\tq -> quit");
     }
 
+    //EFFECTS: prints matrix and additional menu options
     private void displaySupplementMenu() {
         printMatrix();
         System.out.println("\nSelect from:");
@@ -166,12 +179,15 @@ public class Matrix {
         System.out.println("\th -> History");
     }
 
+    //EFFECTS: Prints visual representation of matrix as one row per line
     private void printMatrix() {
         for (String str : this.matrix.columnPrint()) {
             System.out.println(str);
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Initiates row size based on user input
     private void initiateRows() {
         boolean isInt = false;
         String selection;
@@ -189,6 +205,8 @@ public class Matrix {
         rowCount = selected;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Initiates column size based on user input
     private void initiateColumns() {
         boolean isInt = false;
         String selection;
@@ -205,6 +223,8 @@ public class Matrix {
         columnCount = selected;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates row and column objects based on arbitrary user input sizes
     private void setUpMatrix() {
         boolean isInt = false;
         String selection = "";
