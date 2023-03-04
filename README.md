@@ -20,11 +20,15 @@ enjoy being able to explore applications of programming to other fields.
 
 \
 **User Stories:**
-> As a user, I want to be able to input length and width of matrix
+> As a user, I want to be able to input an arbitrary length and width of matrix
 > 
 > As a user, I want to be able to view the state of matrix after each operation
 > 
-> As a user, I want to be able to add and remove numbers
+> As a user, I want to be able to add and remove row vectors
 > 
-> As a user, I want to be able to perform row/column operations such as swap
+> As a user, I want to be able to perform row operations such as swap, addition, subtraction and constant multiplication
+> 
+> As a user, I want to be able to save and load my matrix
+> 
+> As a user, I want to be able to view my past operations history
 

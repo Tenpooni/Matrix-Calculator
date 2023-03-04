@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 //Represents a row of arbitrary size
-public class Row {
+public class Row implements Writable {
     private ArrayList<Float> elements;   //stores floats in row
     private int columnCount;             //size of row
 
@@ -56,6 +60,7 @@ public class Row {
     //EFFECTS: add row value at index
     public void setRow(int i, float val) {
         this.elements.add(i, val);
+        //this.columnCount = elements.size();
     }
 
     //EFFECTS: return value at index
@@ -68,4 +73,15 @@ public class Row {
         return this.columnCount;
     }
 
+
+
+    //JSON WORK
+    @Override
+    public JSONArray toJson() {
+        JSONArray json = new JSONArray();
+        for (Float e : elements) {
+            json.put(e);
+        }
+        return json;
+    }
 }

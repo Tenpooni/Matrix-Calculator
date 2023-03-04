@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 //Represents a column of arbitrary size
-public class Column {
+public class Column implements Writable {
     private ArrayList<Row> column;   //stores rows in the column
     private int rowCount;            //size of column
 
@@ -72,6 +76,24 @@ public class Column {
         toMultiply.multiply(c);
     }
 
+    //TEST FUNCTION
+    public void removeRow(int r) {
+        this.column.remove(r);
+    }
+
+    //TEST FUNCTION
+    public void insertRow(int index, Row row) {
+        this.column.add(index, row);
+    }
+
+    public int getRowCount() {
+        return this.column.size();
+    }
+
+    public int getColCount() {
+        return this.rowCount;
+    }
+
     //MODIFIES: this
     //EFFECTS: Adds row to column
     public void setColumn(int i, Row r) {
@@ -83,5 +105,33 @@ public class Column {
     public Row getColumn(int i) {
         return this.column.get(i);
     }
+
+
+
+
+
+    //JSON WORK
+    @Override
+    public JSONArray toJson() {
+        JSONArray json = new JSONArray();
+        for (Row row : column) {
+            json.put(row.toJson());
+        }
+
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray rowsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Row row : column) {
+            jsonArray.put(row.toJson());
+        }
+
+        return jsonArray;
+    }
+
+
 
 }

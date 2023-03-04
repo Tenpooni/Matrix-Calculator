@@ -3,7 +3,11 @@ package ui;
 import model.Log;
 import model.Column;
 import model.Row;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -18,8 +22,14 @@ public class Matrix {
     Column matrix = new Column(rowCount);
     boolean runCalc = true;
 
+    private static final String JSON_STORE = "./data/matrix.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
     //EFFECTS: runs Calculator application
-    public Matrix() {
+    public Matrix() throws FileNotFoundException {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runUserInterface();
     }
 
@@ -62,21 +72,6 @@ public class Matrix {
         }
     }
 
-    //EFFECTS: Prevents double selection of same row
-    private void verifyIndex(String command) {
-        int r1 = verifyRowSelection() - 1;
-        int r2 = -1;
-        if (!Objects.equals(command, "m")) {
-            r2 = verifyRowSelection() - 1;
-        }
-
-        while (r2 == r1) {
-            r2 = verifyRowSelection() - 1;
-        }
-
-        runOperations(command, r1, r2);
-    }
-
     //EFFECTS: Runs operation processes in calculator
     private void runOperations(String command, int r1, int r2) {
         switch (command) {
@@ -104,35 +99,84 @@ public class Matrix {
     private void runSupplementMenu() {
         String command = "";
 
-        while (!(command.equals("o") || command.equals("h"))) {
+        while (!(command.equals("o") || command.equals("h") || command.equals("r")
+                || command.equals("i") || command.equals("s") || command.equals("l"))) {
             displaySupplementMenu();
             command = input.next();
         }
 
-        if (command.equals("o")) {
-            runOperationMenu();
-        } else {
-            System.out.println("Operation history: ");
-            printHistory();
-            runSupplementMenu();
+        switch (command) {
+            case "o":
+                runOperationMenu();
+                break;
+            case "h":
+                System.out.println("Operation history: ");
+                printHistory();
+                break;
+            case "r":
+                removeRow();
+                break;
+            case "i":
+                insertRow();
+                break;
+            case "s":
+                saveMatrix();
+                break;
+            case "l":
+                loadMatrix();
+                break;
         }
     }
 
-    //EFFECTS: Prints out previous calculator actions
-    private void printHistory() {
-        ArrayList<String> lines = this.log.result();
-        for (String str : lines) {
-            System.out.println(str);
-        }
+
+    //EFFECTS: prints matrix and Menu options
+    private void displayOperationMenu() {
+        printMatrix();
+        System.out.println("\nSelect from:");
+        System.out.println("\ts -> swap");
+        System.out.println("\t+ -> add");
+        System.out.println("\t- -> subtract");
+        System.out.println("\tm -> scalar multiply");
+        System.out.println("\to -> other menu options");
+        System.out.println("\tq -> quit");
     }
 
-    //EFFECTS: Ensures selected row is valid
-    private int verifyRowSelection() {
+    //EFFECTS: prints matrix and additional menu options
+    private void displaySupplementMenu() {
+        printMatrix();
+        System.out.println("\nSelect from:");
+        System.out.println("\ts -> save");
+        System.out.println("\tl -> load");
+        System.out.println("\ti -> insert row vector");
+        System.out.println("\tr -> remove row vector");
+        System.out.println("\to -> Operations");
+        System.out.println("\th -> History");
+    }
+
+
+
+    //EFFECTS: Prevents double selection of same row
+    private void verifyIndex(String command) {
+        int r1 = verifyRowSelection(rowCount) - 1;
+        int r2 = -1;
+        if (!Objects.equals(command, "m")) {
+            r2 = verifyRowSelection(rowCount) - 1;
+        }
+
+        while (r2 == r1) {
+            r2 = verifyRowSelection(rowCount) - 1;
+        }
+
+        runOperations(command, r1, r2);
+    }
+
+    //EFFECTS: Ensures selected row choice is valid
+    private int verifyRowSelection(int bounds) {
         boolean isInt = false;
         int selected = -1;
         String selection;
 
-        while (!isInt || selected > rowCount || selected <= 0) {
+        while (!isInt || selected > bounds || selected <= 0) {
             System.out.println("Enter row:");
             isInt = input.hasNextInt();
             selection = input.next();
@@ -160,24 +204,6 @@ public class Matrix {
         return selected;
     }
 
-    //EFFECTS: prints matrix and Menu options
-    private void displayOperationMenu() {
-        printMatrix();
-        System.out.println("\nSelect from:");
-        System.out.println("\ts -> swap");
-        System.out.println("\t+ -> add");
-        System.out.println("\t- -> subtract");
-        System.out.println("\tm -> scalar multiply");
-        System.out.println("\tq -> quit");
-    }
-
-    //EFFECTS: prints matrix and additional menu options
-    private void displaySupplementMenu() {
-        printMatrix();
-        System.out.println("\nSelect from:");
-        System.out.println("\to -> Operations");
-        System.out.println("\th -> History");
-    }
 
     //EFFECTS: Prints visual representation of matrix as one row per line
     private void printMatrix() {
@@ -185,6 +211,57 @@ public class Matrix {
             System.out.println(str);
         }
     }
+
+    //EFFECTS: Prints out previous calculator actions
+    private void printHistory() {
+        ArrayList<String> lines = this.log.result();
+        for (String str : lines) {
+            System.out.println(str);
+        }
+    }
+
+
+    private void removeRow() {
+        if (this.rowCount > 1) {
+            int row = verifyRowSelection(rowCount) - 1;
+            this.matrix.removeRow(row);
+            rowCount = this.matrix.getRowCount();
+        } else {
+            System.out.println("invalid, no rows left...");
+        }
+    }
+
+    //Verify index for insertRow function
+    private void insertRow() {
+        int index = verifyRowSelection(rowCount + 1) - 1;
+        Row toInsert = makeNewRow();
+        this.matrix.insertRow(index, toInsert);
+        rowCount = this.matrix.getRowCount();
+    }
+
+    //Helper for insertRow function
+    private Row makeNewRow() {
+        boolean isInt = false;
+        String selection = "";
+        int tempVal;
+        Row tempRow = new Row(columnCount);
+
+        for (int j = 0; j < columnCount; j++) {
+            while (!isInt) {
+                System.out.println("Enter value of row vector: " + (j + 1));
+                isInt = input.hasNextInt();
+                selection = input.next();
+            }
+            tempVal = Integer.parseInt(selection);
+            tempRow.setRow(j, tempVal);
+            isInt = false;
+        }
+        return tempRow;
+    }
+
+
+
+
 
     //MODIFIES: this
     //EFFECTS: Initiates row size based on user input
@@ -247,6 +324,36 @@ public class Matrix {
                 isInt = false;
             }
             this.matrix.setColumn(i, tempRow);
+        }
+    }
+
+
+
+
+
+
+    //JSON work
+    private void saveMatrix() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(matrix);
+            jsonWriter.close();
+            System.out.println("Saved matrix to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads matrix from file
+    private void loadMatrix() {
+        try {
+            matrix = jsonReader.read();
+            this.rowCount = matrix.getRowCount();
+            this.columnCount = matrix.getColCount();
+            System.out.println("Loaded last matrix from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 }
