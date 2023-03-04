@@ -36,8 +36,9 @@ public class Matrix {
     // MODIFIES: this
     // EFFECTS: initializes matrix setup and runs regular operation
     private void runUserInterface() {
+        boolean toLoad = runStartMenu();
 
-        if (!loadMatrix()) {
+        if (!loadMatrix() || !toLoad) {
             initiateRows();
             initiateColumns();
             System.out.println("You entered a matrix with " + rowCount + " rows and " + columnCount + " columns");
@@ -45,6 +46,28 @@ public class Matrix {
         }
 
         runOperationMenu();
+    }
+
+    //EFFECTS: asks user to load matrix or set up new matrix
+    private boolean runStartMenu() {
+        String command = "";
+        boolean toLoad = false;
+
+        while (!(command.equals("y") || command.equals("n"))) {
+            System.out.println("Would you like to load saved matrix? (y/n)");
+            command = input.next();
+        }
+
+        switch (command) {
+            case "y":
+                toLoad = true;
+                break;
+            case "n":
+                toLoad = false;
+                break;
+        }
+
+        return toLoad;
     }
 
     //EFFECTS: Runs operations menu
@@ -330,11 +353,6 @@ public class Matrix {
         }
     }
 
-
-
-
-
-
     // EFFECTS: saves matrix to file
     private void saveMatrix() {
         try {
@@ -354,11 +372,10 @@ public class Matrix {
             matrix = jsonReader.read();
             this.rowCount = matrix.getColumnSize();
             this.columnCount = matrix.getRowSize();
-            System.out.println("Loaded last matrix from " + JSON_STORE);
+            //System.out.println("Loaded last matrix from " + JSON_STORE);
             return true;
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
-            //throw new Exception();
             return false;
         }
     }
