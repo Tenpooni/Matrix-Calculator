@@ -69,7 +69,7 @@ class RowTest {
 
     @Test
     void testGetRowLength() {
-        assertEquals(testRow.getColumnCount(), COLUMNCOUNT);
+        assertEquals(testRow.getRowSize(), COLUMNCOUNT);
     }
 
 }

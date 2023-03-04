@@ -1,7 +1,6 @@
 package model;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
@@ -9,14 +8,14 @@ import java.util.ArrayList;
 //Represents a column of arbitrary size
 public class Column implements Writable {
     private ArrayList<Row> column;   //stores rows in the column
-    private int rowCount;            //size of column
+    private int columnSize;            //size of column
 
 
     //MODIFIES: this
     //EFFECTS: creates column with memory to store arbitrary number of rows
     public Column(int rowNum) {
         this.column = new ArrayList<>(rowNum);
-        this.rowCount = rowNum;
+        this.columnSize = rowNum;
     }
 
     //EFFECTS: returns every row in column as a string representation
@@ -46,7 +45,7 @@ public class Column implements Writable {
     public void addRow(int r1, int r2) {
         Row toAdd = this.column.get(r1);
         Row toReplace = this.column.get(r2);
-        int rowLength = toReplace.getColumnCount();
+        int rowLength = toReplace.getRowSize();
 
         for (int i = 0; i < rowLength; i++) {
             float c = toAdd.getValue(i);
@@ -60,7 +59,7 @@ public class Column implements Writable {
     public void subtractRow(int r1, int r2) {
         Row toSubtract = this.column.get(r1);
         Row toReplace = this.column.get(r2);
-        int rowLength = toReplace.getColumnCount();
+        int rowLength = toReplace.getRowSize();
 
         for (int i = 0; i < rowLength; i++) {
             float c = toSubtract.getValue(i);
@@ -86,12 +85,16 @@ public class Column implements Writable {
         this.column.add(index, row);
     }
 
-    public int getRowCount() {
+
+
+    //columnSize is row count
+    public int getColumnSize() {
         return this.column.size();
     }
 
-    public int getColCount() {
-        return this.rowCount;
+    //rowSize is column count
+    public int getRowSize() {
+        return this.column.get(0).getRowSize();
     }
 
     //MODIFIES: this

@@ -36,10 +36,13 @@ public class Matrix {
     // MODIFIES: this
     // EFFECTS: initializes matrix setup and runs regular operation
     private void runUserInterface() {
-        initiateRows();
-        initiateColumns();
-        System.out.println("You entered a matrix with " + rowCount + " rows and " + columnCount + " columns");
-        setUpMatrix();
+
+        if (!loadMatrix()) {
+            initiateRows();
+            initiateColumns();
+            System.out.println("You entered a matrix with " + rowCount + " rows and " + columnCount + " columns");
+            setUpMatrix();
+        }
 
         runOperationMenu();
     }
@@ -225,7 +228,7 @@ public class Matrix {
         if (this.rowCount > 1) {
             int row = verifyRowSelection(rowCount) - 1;
             this.matrix.removeRow(row);
-            rowCount = this.matrix.getRowCount();
+            rowCount = this.matrix.getColumnSize();
         } else {
             System.out.println("invalid, no rows left...");
         }
@@ -236,7 +239,7 @@ public class Matrix {
         int index = verifyRowSelection(rowCount + 1) - 1;
         Row toInsert = makeNewRow();
         this.matrix.insertRow(index, toInsert);
-        rowCount = this.matrix.getRowCount();
+        rowCount = this.matrix.getColumnSize();
     }
 
     //Helper for insertRow function
@@ -332,7 +335,7 @@ public class Matrix {
 
 
 
-    //JSON work
+    // EFFECTS: saves matrix to file
     private void saveMatrix() {
         try {
             jsonWriter.open();
@@ -346,15 +349,20 @@ public class Matrix {
 
     // MODIFIES: this
     // EFFECTS: loads matrix from file
-    private void loadMatrix() {
+    private boolean loadMatrix() {
         try {
             matrix = jsonReader.read();
-            this.rowCount = matrix.getRowCount();
-            this.columnCount = matrix.getColCount();
+            this.rowCount = matrix.getColumnSize();
+            this.columnCount = matrix.getRowSize();
             System.out.println("Loaded last matrix from " + JSON_STORE);
+            return true;
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
+            //throw new Exception();
+            return false;
         }
     }
+
+
 }
 

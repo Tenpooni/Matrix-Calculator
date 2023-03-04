@@ -28,7 +28,7 @@ enjoy being able to explore applications of programming to other fields.
 > 
 > As a user, I want to be able to perform row operations such as swap, addition, subtraction and constant multiplication
 > 
-> As a user, I want to be able to save and load my matrix
+> As a user, I want to be able to save the state of my matrix
 > 
-> As a user, I want to be able to view my past operations history
+> As a user, I want to be able to load my most recent matrix
 

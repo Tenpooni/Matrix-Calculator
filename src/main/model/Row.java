@@ -1,7 +1,6 @@
 package model;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
@@ -9,14 +8,14 @@ import java.util.ArrayList;
 //Represents a row of arbitrary size
 public class Row implements Writable {
     private ArrayList<Float> elements;   //stores floats in row
-    private int columnCount;             //size of row
+    private int rowSize;             //size of row
 
 
     //MODIFIES: this
     //EFFECTS: creates row with memory to store arbitrary number of rows
     public Row(int colNum) {
         this.elements = new ArrayList<>(colNum);
-        this.columnCount = colNum;
+        this.rowSize = colNum;
     }
 
     //EFFECTS: returns text representation of the row
@@ -33,7 +32,7 @@ public class Row implements Writable {
     //MODIFIES: this
     //EFFECTS: multiplies every float in row by given constant
     public void multiply(float c) {
-        for (int i = 0; i < this.columnCount; i++) {
+        for (int i = 0; i < this.rowSize; i++) {
             float num = this.elements.get(i);
             num = num * c;
             this.elements.set(i,num);
@@ -69,8 +68,8 @@ public class Row implements Writable {
     }
 
     //EFFECTS: return columnCount
-    public int getColumnCount() {
-        return this.columnCount;
+    public int getRowSize() {
+        return this.elements.size();
     }
 
 
