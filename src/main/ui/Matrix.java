@@ -63,7 +63,6 @@ public class Matrix {
                 toLoad = true;
                 break;
             case "n":
-                toLoad = false;
                 break;
         }
 
@@ -372,7 +371,6 @@ public class Matrix {
             matrix = jsonReader.read();
             this.rowCount = matrix.getColumnSize();
             this.columnCount = matrix.getRowSize();
-            //System.out.println("Loaded last matrix from " + JSON_STORE);
             return true;
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
