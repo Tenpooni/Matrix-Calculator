@@ -75,24 +75,25 @@ public class Column implements Writable {
         toMultiply.multiply(c);
     }
 
-
-    //TEST FUNCTION
+    //MODIFIES: this
+    //EFFECTS: Remove existing row vector at index
     public void removeRow(int r) {
         this.column.remove(r);
     }
 
-    //TEST FUNCTION
+    //MODIFIES: this
+    //EFFECTS: Insert Row vector at index
     public void insertRow(int index, Row row) {
         this.column.add(index, row);
     }
 
 
-    //columnSize is row count
+    //EFFECTS: return columnSize is row count
     public int getColumnSize() {
         return this.column.size();
     }
 
-    //rowSize is column count
+    //EFFECTS: return rowSize is column count
     public int getRowSize() {
         return this.column.get(0).getRowSize();
     }
@@ -111,7 +112,7 @@ public class Column implements Writable {
 
 
 
-    //JSON WORK
+    //EFFECTS: Writes each row item to JsonArray
     @Override
     public JSONArray toJson() {
         JSONArray json = new JSONArray();

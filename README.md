@@ -30,5 +30,5 @@ enjoy being able to explore applications of programming to other fields.
 > 
 > As a user, I want to be able to save the state of my matrix
 > 
-> As a user, I want to be able to load my most recent matrix
+> As a user, I want to choose between loading last matrix or creating new matrix
 

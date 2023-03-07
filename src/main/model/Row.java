@@ -74,7 +74,7 @@ public class Row implements Writable {
 
 
 
-    //JSON WORK
+    //EFFECTS: Writes each float value to JsonArray
     @Override
     public JSONArray toJson() {
         JSONArray json = new JSONArray();

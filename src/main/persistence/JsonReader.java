@@ -39,9 +39,8 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-
-
-
+    //MODIFIES: this
+    //EFFECTS: creates new column object based on saved data
     private Column parseColumn(JSONArray columnArray) {
 
         int columnSize = columnArray.length();
@@ -55,6 +54,8 @@ public class JsonReader {
         return col;
     }
 
+    //MODIFIES: this
+    //EFFECTS: creates row object containing float values based on saved data
     private Row parseRows(Column col, JSONArray buildRow) {
         int rowSize = buildRow.length();
         Row row = new Row(rowSize);

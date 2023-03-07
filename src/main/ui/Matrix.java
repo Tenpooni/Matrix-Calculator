@@ -120,7 +120,7 @@ public class Matrix {
         }
     }
 
-    //
+
     //EFFECTS: Runs supplement menu with history log. TA permission given to suppress checkstyle
     @SuppressWarnings("methodlength")
     private void runSupplementMenu() {
@@ -247,7 +247,8 @@ public class Matrix {
         }
     }
 
-
+    //MODIFIES: this
+    //EFFECTS: checks row is removable before removing row vector
     private void removeRow() {
         if (this.rowCount > 1) {
             int row = verifyRowSelection(rowCount) - 1;
@@ -258,7 +259,8 @@ public class Matrix {
         }
     }
 
-    //Verify index for insertRow function
+    //REQUIRES: integer within 1, rowcount + 1
+    //EFFECTS: Verify index for insertRow function
     private void insertRow() {
         int index = verifyRowSelection(rowCount + 1) - 1;
         Row toInsert = makeNewRow();
@@ -266,7 +268,8 @@ public class Matrix {
         rowCount = this.matrix.getColumnSize();
     }
 
-    //Helper for insertRow function
+    //MODIFIES: this
+    //EFFECTS: asks user to set new inserted vector
     private Row makeNewRow() {
         boolean isInt = false;
         String selection = "";
@@ -285,9 +288,6 @@ public class Matrix {
         }
         return tempRow;
     }
-
-
-
 
 
     //MODIFIES: this
