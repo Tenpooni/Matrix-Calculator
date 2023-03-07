@@ -75,6 +75,7 @@ public class Column implements Writable {
         toMultiply.multiply(c);
     }
 
+
     //TEST FUNCTION
     public void removeRow(int r) {
         this.column.remove(r);
@@ -84,7 +85,6 @@ public class Column implements Writable {
     public void insertRow(int index, Row row) {
         this.column.add(index, row);
     }
-
 
 
     //columnSize is row count
@@ -111,8 +111,6 @@ public class Column implements Writable {
 
 
 
-
-
     //JSON WORK
     @Override
     public JSONArray toJson() {
@@ -120,21 +118,6 @@ public class Column implements Writable {
         for (Row row : column) {
             json.put(row.toJson());
         }
-
         return json;
     }
-
-    // EFFECTS: returns things in this workroom as a JSON array
-    private JSONArray rowsToJson() {
-        JSONArray jsonArray = new JSONArray();
-
-        for (Row row : column) {
-            jsonArray.put(row.toJson());
-        }
-
-        return jsonArray;
-    }
-
-
-
 }

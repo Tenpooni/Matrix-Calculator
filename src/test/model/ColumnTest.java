@@ -76,6 +76,24 @@ public class ColumnTest {
     }
 
     @Test
+    void testRemoveRow() {
+        columnTest.setColumn(0,row0);
+        columnTest.setColumn(1,row1);
+        columnTest.removeRow(0);
+        Row checkRow = columnTest.getColumn(0);
+        assertEquals(checkRow, row1);
+    }
+
+    @Test
+    void testInsertRow() {
+        columnTest.setColumn(0,row0);
+        columnTest.setColumn(1, row2);
+        columnTest.insertRow(1, row1);
+        Row checkRow = columnTest.getColumn(1);
+        assertEquals(checkRow, row1);
+    }
+
+    @Test
     void testSetColumn() {
         columnTest.setColumn(0,row1);
         Row checkRow = columnTest.getColumn(0);
