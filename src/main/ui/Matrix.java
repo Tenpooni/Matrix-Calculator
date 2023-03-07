@@ -120,7 +120,9 @@ public class Matrix {
         }
     }
 
-    //EFFECTS: Runs supplement menu with history log.
+    //
+    //EFFECTS: Runs supplement menu with history log. TA permission given to suppress checkstyle
+    @SuppressWarnings("methodlength")
     private void runSupplementMenu() {
         String command = "";
 

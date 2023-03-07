@@ -6,13 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonReaderTest {
 
-    private Column matrixTest;
+    private Column matrixReference;
     private final Row row0 = new Row(1);
     private final Row row1 = new Row(1);
     private final Row row2 = new Row(1);
@@ -22,13 +21,13 @@ class JsonReaderTest {
 
     @BeforeEach
     void runBefore() {
-        matrixTest = new Column(3);
+        matrixReference = new Column(3);
         row0.setRow(0,TEST0);
         row1.setRow(0,TEST1);
         row2.setRow(0,TEST2);
-        matrixTest.setColumn(0, row0);
-        matrixTest.setColumn(1, row1);
-        matrixTest.setColumn(2, row2);
+        matrixReference.setColumn(0, row0);
+        matrixReference.setColumn(1, row1);
+        matrixReference.setColumn(2, row2);
     }
 
     @Test
@@ -56,7 +55,10 @@ class JsonReaderTest {
     void testReaderGeneralWorkRoom() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralMatrix.json");
         try {
-            matrixTest = reader.read();
+            Column matrixTest = reader.read();
+            assertEquals(matrixTest.getColumn(0).getValue(0), matrixReference.getColumn(0).getValue(0));
+            assertEquals(matrixTest.getColumn(1).getValue(0), matrixReference.getColumn(1).getValue(0));
+            assertEquals(matrixTest.getColumn(2).getValue(0), matrixReference.getColumn(2).getValue(0));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
