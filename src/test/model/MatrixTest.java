@@ -85,4 +85,75 @@ public class MatrixTest {
         assertEquals(checkRow2, row1);
     }
 
+    @Test
+    void testGetResult() {
+        ArrayList<String> testing = matrixTest.getResult();
+        assertEquals(testing, matrixTest.log.result());
+    }
+
+    @Test
+    void testPrintMatrix() {
+        ArrayList<String> testing = matrixTest.printMatrix();
+        ArrayList<String> testString = new ArrayList<>();
+        testString.add(STR0);
+        testString.add(STR1);
+        testString.add(STR2);
+        assertTrue(testing.equals(testString));
+    }
+
+    @Test
+    void testClearHistory() {
+        matrixTest.clearHistory();
+        ArrayList<String> test = new ArrayList<>();
+        test.add("No operations yet");
+        assertEquals(matrixTest.log.result(),test);
+    }
+
+    @Test
+    void testMatrixSwapRow() {
+        matrixTest.swapRow(0,1);
+        assertEquals(columnTest.getColumn(0),row1);
+        assertEquals(columnTest.getColumn(1),row0);
+        assertEquals(matrixTest.log.getLogLine(0), "R0 swap R1");
+    }
+
+    @Test
+    void testAddRow() {
+        matrixTest.addRow(0, 1);
+        Row r0 = columnTest.getColumn(1);
+        float r0Val = r0.getValue(0);
+        Row r1 = columnTest.getColumn(1);
+        float r1Val = r1.getValue(0);
+        assertEquals(r1Val, TEST0 + TEST1);
+        assertEquals(matrixTest.log.getLogLine(0), "R0 + R1");
+    }
+
+    @Test
+    void testSubtractRow() {
+        matrixTest.subtractRow(1,2);
+        Row r1 = columnTest.getColumn(1);
+        float r1Val = r1.getValue(0);
+        Row r2 = columnTest.getColumn(2);
+        float r2Val = r2.getValue(0);
+        assertEquals(r2Val, TEST1 - TEST2);
+        assertEquals(matrixTest.log.getLogLine(0), "R1 - R2");
+    }
+
+    @Test
+    void testMultiplyRow() {
+        matrixTest.multiplyRow(0, TEST0);
+        Row row0Compare = columnTest.getColumn(0);
+        float compareVal = row0Compare.getValue(0);
+        assertEquals(compareVal, TEST0 * TEST0);
+        assertEquals(matrixTest.log.getLogLine(0), "R0 * " + TEST0);
+    }
+
+    @Test
+    void enterVector() {
+        matrixTest.enterVector(0,"Remove");
+        assertEquals(matrixTest.log.getLogLine(0), "Remove row vector at R" + 1);
+    }
+
+
+
 }
