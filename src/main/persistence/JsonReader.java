@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Log;
 import model.Column;
 import model.Row;
 
@@ -20,12 +21,20 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads matrix from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Column read() throws IOException {
+    public Column readMatrix() throws IOException {
         String jsonData = readFile(source);
-        JSONArray jsonArray = new JSONArray(jsonData);
-        return parseColumn(jsonArray);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseColumn(jsonObject);
+    }
+
+    // EFFECTS: reads history log from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public Log readLog() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseLog(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -40,8 +49,25 @@ public class JsonReader {
     }
 
     //MODIFIES: this
+    //EFFECTS: creates log object containing strings listing each action
+    private Log parseLog(JSONObject jsonObject) {
+        JSONArray logArray = jsonObject.getJSONArray("History");
+
+        int listSize = logArray.length();
+        Log log = new Log();
+
+        for (int i = 0; i < listSize; i++) {
+            String tempString = logArray.getString(i);
+            log.setLogLine(i, tempString);
+        }
+        return log;
+    }
+
+    //MODIFIES: this
     //EFFECTS: creates new column object based on saved data
-    private Column parseColumn(JSONArray columnArray) {
+    private Column parseColumn(JSONObject jsonObject) {
+
+        JSONArray columnArray = jsonObject.getJSONArray("Matrix");
 
         int columnSize = columnArray.length();
         Column col = new Column(columnSize);

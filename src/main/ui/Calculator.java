@@ -1,10 +1,12 @@
 package ui;
 
-import model.Log;
-import model.Column;
 import model.Row;
+import model.Matrix;
+import model.Log;
+import org.json.JSONObject;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+import persistence.Writable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,13 +15,13 @@ import java.util.Objects;
 import java.util.Scanner;
 
 //Matrix Calculator App
-public class Matrix {
+public class Calculator implements Writable {
 
     private int columnCount;
     private int rowCount;
     private final Scanner input = new Scanner(System.in);
-    Log log = new Log();
-    Column matrix = new Column(rowCount);
+    Matrix matrix = new Matrix();
+
     boolean runCalc = true;
 
     private static final String JSON_STORE = "./data/matrix.json";
@@ -27,7 +29,7 @@ public class Matrix {
     private JsonReader jsonReader;
 
     //EFFECTS: runs Calculator application
-    public Matrix() throws FileNotFoundException {
+    public Calculator() throws FileNotFoundException {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runUserInterface();
@@ -41,6 +43,7 @@ public class Matrix {
         if (!loadMatrix() || !toLoad) {
             initiateRows();
             initiateColumns();
+            matrix.clearHistory();
             System.out.println("You entered a matrix with " + rowCount + " rows and " + columnCount + " columns");
             setUpMatrix();
         }
@@ -63,6 +66,7 @@ public class Matrix {
                 toLoad = true;
                 break;
             case "n":
+
                 break;
         }
 
@@ -101,21 +105,17 @@ public class Matrix {
     private void runOperations(String command, int r1, int r2) {
         switch (command) {
             case "s":
-                this.matrix.swapRow(r1,r2);
-                this.log.entryArithmetic(r1, r2, "swap");
+                matrix.swapRow(r1, r2);
                 break;
             case "+":
-                this.matrix.addRow(r1,r2);
-                this.log.entryArithmetic(r1, r2, "+");
+                matrix.addRow(r1, r2);
                 break;
             case "-":
-                this.matrix.subtractRow(r1,r2);
-                this.log.entryArithmetic(r1, r2, "-");
+                matrix.subtractRow(r1, r2);
                 break;
             case "m":
                 float c = verifyConstant();
-                this.matrix.multiplyRow(r1,c);
-                this.log.entryMultiplicative(r1,c);
+                matrix.multiplyRow(r1, c);
                 break;
         }
     }
@@ -234,14 +234,14 @@ public class Matrix {
 
     //EFFECTS: Prints visual representation of matrix as one row per line
     private void printMatrix() {
-        for (String str : this.matrix.columnPrint()) {
+        for (String str : matrix.printMatrix()) {
             System.out.println(str);
         }
     }
 
     //EFFECTS: Prints out previous calculator actions
     private void printHistory() {
-        ArrayList<String> lines = this.log.result();
+        ArrayList<String> lines = matrix.getResult();
         for (String str : lines) {
             System.out.println(str);
         }
@@ -251,21 +251,23 @@ public class Matrix {
     //EFFECTS: checks row is removable before removing row vector
     private void removeRow() {
         if (this.rowCount > 1) {
-            int row = verifyRowSelection(rowCount) - 1;
-            this.matrix.removeRow(row);
-            rowCount = this.matrix.getColumnSize();
+            int index = verifyRowSelection(rowCount) - 1;
+            matrix.removeMatrixRow(index);
+            rowCount = matrix.getMatrixColumnSize();
+            matrix.enterVector(index, "Removed");
         } else {
             System.out.println("invalid, no rows left...");
         }
     }
 
-    //REQUIRES: integer within 1, rowcount + 1
+    //REQUIRES: integer within 1, rowCount + 1
     //EFFECTS: Verify index for insertRow function
     private void insertRow() {
         int index = verifyRowSelection(rowCount + 1) - 1;
         Row toInsert = makeNewRow();
-        this.matrix.insertRow(index, toInsert);
-        rowCount = this.matrix.getColumnSize();
+        matrix.insertMatrixRow(index, toInsert);
+        rowCount = matrix.getMatrixColumnSize();
+        matrix.enterVector(index, "Added");
     }
 
     //MODIFIES: this
@@ -307,6 +309,7 @@ public class Matrix {
         }
 
         rowCount = selected;
+        matrix.setRowCount(selected);
     }
 
     //MODIFIES: this
@@ -325,6 +328,7 @@ public class Matrix {
             }
         }
         columnCount = selected;
+        matrix.setColumnCount(selected);
     }
 
     //MODIFIES: this
@@ -334,7 +338,7 @@ public class Matrix {
         String selection = "";
         int tempVal;
 
-        this.matrix = new Column(rowCount);
+        this.matrix.newMatrix(rowCount);
 
         for (int i = 0; i < rowCount; i++) {
             Row tempRow = new Row(columnCount);
@@ -350,11 +354,20 @@ public class Matrix {
                 tempRow.setRow(j, tempVal);
                 isInt = false;
             }
-            this.matrix.setColumn(i, tempRow);
+            matrix.setColumn(i, tempRow);
         }
     }
 
-    // EFFECTS: saves matrix to file
+    //EFFECTS: write both matrix and history log as JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Matrix", matrix.matrixToJson());
+        json.put("History", matrix.logToJson());
+        return json;
+    }
+
+    // EFFECTS: saves matrix to file including history
     private void saveMatrix() {
         try {
             jsonWriter.open();
@@ -369,17 +382,19 @@ public class Matrix {
     // MODIFIES: this
     // EFFECTS: loads matrix from file
     private boolean loadMatrix() {
+
         try {
-            matrix = jsonReader.read();
-            this.rowCount = matrix.getColumnSize();
-            this.columnCount = matrix.getRowSize();
+            matrix.setMatrix(jsonReader.readMatrix());
+            matrix.setLog(jsonReader.readLog());
+
+            this.rowCount = matrix.getMatrixColumnSize();
+            this.columnCount = matrix.getMatrixRowSize();
             return true;
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
             return false;
         }
     }
-
 
 }
 

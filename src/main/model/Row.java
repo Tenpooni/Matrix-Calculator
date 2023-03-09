@@ -1,12 +1,11 @@
 package model;
 
 import org.json.JSONArray;
-import persistence.Writable;
 
 import java.util.ArrayList;
 
 //Represents a row of arbitrary size
-public class Row implements Writable {
+public class Row {
     private ArrayList<Float> elements;   //stores floats in row
     private int rowSize;             //size of row
 
@@ -73,10 +72,8 @@ public class Row implements Writable {
     }
 
 
-
     //EFFECTS: Writes each float value to JsonArray
-    @Override
-    public JSONArray toJson() {
+    public JSONArray rowToJson() {
         JSONArray json = new JSONArray();
         for (Float e : elements) {
             json.put(e);

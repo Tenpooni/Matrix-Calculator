@@ -1,6 +1,7 @@
 package model;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
@@ -114,10 +115,16 @@ public class Column implements Writable {
 
     //EFFECTS: Writes each row item to JsonArray
     @Override
-    public JSONArray toJson() {
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Matrix", columnToJson());
+        return json;
+    }
+
+    public JSONArray columnToJson() {
         JSONArray json = new JSONArray();
         for (Row row : column) {
-            json.put(row.toJson());
+            json.put(row.rowToJson());
         }
         return json;
     }

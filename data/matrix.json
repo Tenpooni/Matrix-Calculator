@@ -1,14 +1,30 @@
-[
-    [
-        2,
-        3
+{
+    "Matrix": [
+        [
+            8,
+            9
+        ],
+        [
+            2,
+            4
+        ],
+        [
+            5,
+            6
+        ]
     ],
-    [
-        5,
-        6
-    ],
-    [
-        8,
-        10
+    "History": [
+        "R1 swap R0",
+        "Added row vector at R1",
+        "Removed row vector at R1",
+        "R1 swap R0",
+        "Added row vector at R3",
+        "R2 swap R0",
+        "R2 swap R1",
+        "R1 + R2",
+        "R0 - R2",
+        "Removed row vector at R3",
+        "Added row vector at R3",
+        "R1 * 2.0"
     ]
-]
+}

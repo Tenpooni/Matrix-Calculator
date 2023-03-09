@@ -6,7 +6,7 @@
 \
 **Questions:**
 <p>1. What will the application do?<br>
-The application will let a user input a matrix in augmented form <br>
+The application will let a user input a calculator in augmented form <br>
 and choose row operations to apply such as swap, scalar multiplication <br>
 and addition.
 <br>
@@ -20,15 +20,15 @@ enjoy being able to explore applications of programming to other fields.
 
 \
 **User Stories:**
-> As a user, I want to be able to input an arbitrary length and width of matrix
+> As a user, I want to be able to input an arbitrary length and width of calculator
 > 
-> As a user, I want to be able to view the state of matrix after each operation
+> As a user, I want to be able to view the state of calculator after each operation
 > 
 > As a user, I want to be able to add and remove row vectors
 > 
 > As a user, I want to be able to perform row operations such as swap, addition, subtraction and constant multiplication
 > 
-> As a user, I want to be able to save the state of my matrix
+> As a user, I want to be able to save the state of my calculator
 > 
-> As a user, I want to choose between loading last matrix or creating new matrix
+> As a user, I want to choose between loading last calculator or creating new calculator
 

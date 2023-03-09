@@ -1,7 +1,7 @@
 package persistence;
 
-import model.Column;
-import org.json.JSONArray;
+import model.Matrix;
+import ui.Calculator;
 import org.json.JSONObject;
 
 
@@ -25,10 +25,10 @@ public class JsonWriter {
         writer = new PrintWriter(new File(destination));
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes JSON representation of matrix to file
-    public void write(Column col) {
-        JSONArray json = col.toJson();
+
+
+    public void write(Matrix matrix) {
+        JSONObject json = matrix.toJson();
         saveToFile(json.toString(TAB));
     }
 
