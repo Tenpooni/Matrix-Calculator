@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -149,11 +151,17 @@ public class MatrixTest {
     }
 
     @Test
-    void enterVector() {
+    void testEnterVector() {
         matrixTest.enterVector(0,"Remove");
         assertEquals(matrixTest.log.getLogLine(0), "Remove row vector at R" + 1);
     }
 
-
+    @Test
+    void testMatrixToJson() {
+        JSONObject json = new JSONObject();
+        json = matrixTest.toJson();
+        assertEquals(json.getJSONArray("Matrix").toString(), "[[3],[0],[-1]]");
+        assertEquals(json.getJSONArray("History").toString(), "[]");
+    }
 
 }

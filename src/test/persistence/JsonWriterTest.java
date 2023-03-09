@@ -112,4 +112,33 @@ class JsonWriterTest {
             fail("Exception should not have been thrown");
         }
     }
+
+    @Test
+    void testWriterMatrixMethods() {
+        try {
+            JsonWriter writer = new JsonWriter("./data/testWriterGeneralMatrix.json");
+
+            writer.open();
+            writer.write(matrixTest);
+            writer.close();
+
+            JsonReader reader = new JsonReader("./data/testWriterGeneralMatrix.json");
+            Column matrixTestRead = reader.readMatrix();
+
+            Row checkRow0 = matrixTestRead.getColumn(0);
+            assertEquals(checkRow0.getValue(0), row0.getValue(0));
+            Row checkRow1 = matrixTestRead.getColumn(1);
+            assertEquals(checkRow1.getValue(0), row1.getValue(0));
+            Row checkRow2 = matrixTestRead.getColumn(2);
+            assertEquals(checkRow2.getValue(0), row2.getValue(0));
+
+            Log checkLog = matrixTest.getLog();
+            ArrayList<String> testHasString = new ArrayList<>();
+            testHasString.add(stringTest);
+            assertEquals(checkLog.result(), testHasString);
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
 }
