@@ -30,6 +30,15 @@ public class Matrix implements Writable {
         this.rowCount = i;
     }
 
+    public int getColumnCount() {
+        return this.columnCount;
+    }
+
+    public int getRowCount() {
+        return this.rowCount;
+    }
+
+
     public void setColumn(int i, Row row) {
         this.column.setColumn(i, row);
     }

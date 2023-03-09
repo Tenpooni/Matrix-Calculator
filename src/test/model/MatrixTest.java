@@ -55,6 +55,20 @@ public class MatrixTest {
     }
 
     @Test
+    void testGetColumnCount() {
+        matrixTest.setColumnCount(6);
+        int check = matrixTest.getColumnCount();
+        assertEquals(check,6);
+    }
+
+    @Test
+    void testGetRowCount() {
+        matrixTest.setRowCount(6);
+        int check = matrixTest.getRowCount();
+        assertEquals(check,6);
+    }
+
+    @Test
     void testSetMatrix() {
         matrixTest.setMatrix(columnTest);
         Row checkRow = matrixTest.column.getColumn(0);
