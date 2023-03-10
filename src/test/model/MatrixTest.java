@@ -12,26 +12,30 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MatrixTest {
     private Column columnTest;
     private Matrix matrixTest;
-    private Row row0 = new Row(1);
-    private Row row1 = new Row(1);
-    private Row row2 = new Row(1);
+    private Log logTest;
+    private final Row row0 = new Row(1);
+    private final Row row1 = new Row(1);
+    private final Row row2 = new Row(1);
     private final float TEST0 = 3;
     private final float TEST1 = 0;
     private final float TEST2 = -1;
     private final String STR0 = "|" + TEST0;
     private final String STR1 = "|" + TEST1;
     private final String STR2 = "|" + TEST2;
+    private final String stringTest = "R0 swap R1";
 
     @BeforeEach
     void runBefore() {
         columnTest = new Column(3);
         matrixTest = new Matrix();
+        logTest = new Log();
         row0.setRow(0,TEST0);
         row1.setRow(0,TEST1);
         row2.setRow(0,TEST2);
         columnTest.setColumn(0, row0);
         columnTest.setColumn(1, row1);
         columnTest.setColumn(2, row2);
+        logTest.setLogLine(0, stringTest);
         matrixTest.setMatrix(columnTest);
     }
 
@@ -114,7 +118,7 @@ public class MatrixTest {
         testString.add(STR0);
         testString.add(STR1);
         testString.add(STR2);
-        assertTrue(testing.equals(testString));
+        assertEquals(testing, testString);
     }
 
     @Test
@@ -172,16 +176,19 @@ public class MatrixTest {
 
     @Test
     void testMatrixToJson() {
-        JSONObject json = new JSONObject();
-        json = matrixTest.column.toJson();
-        assertEquals(json.getJSONArray("Matrix").toString(), "[[3],[0],[-1]]");
+        JSONArray json = new JSONArray();
+        json = matrixTest.matrixToJson();
+        assertEquals(json.get(0).toString(), "[3]");
+        assertEquals(json.get(1).toString(), "[0]");
+        assertEquals(json.get(2).toString(), "[-1]");
     }
 
     @Test
     void testLogToJson() {
-        JSONObject json = new JSONObject();
-        json = matrixTest.log.toJson();
-        assertEquals(json.getJSONArray("History").toString(), "[\"No operations yet\"]");
+        JSONArray json = new JSONArray();
+        matrixTest.setLog(logTest);
+        json = matrixTest.logToJson();
+        assertEquals(json.get(0).toString(), "R0 swap R1");
     }
 
     @Test
