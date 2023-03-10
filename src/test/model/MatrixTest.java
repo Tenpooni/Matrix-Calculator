@@ -173,6 +173,20 @@ public class MatrixTest {
     @Test
     void testMatrixToJson() {
         JSONObject json = new JSONObject();
+        json = matrixTest.column.toJson();
+        assertEquals(json.getJSONArray("Matrix").toString(), "[[3],[0],[-1]]");
+    }
+
+    @Test
+    void testLogToJson() {
+        JSONObject json = new JSONObject();
+        json = matrixTest.log.toJson();
+        assertEquals(json.getJSONArray("History").toString(), "[\"No operations yet\"]");
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = new JSONObject();
         json = matrixTest.toJson();
         assertEquals(json.getJSONArray("Matrix").toString(), "[[3],[0],[-1]]");
         assertEquals(json.getJSONArray("History").toString(), "[]");

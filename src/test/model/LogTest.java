@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,5 +68,12 @@ public class LogTest {
         testLog.entryMultiplicative(r1, c);
         String testString = testLog.getLogLine(0);
         assertEquals(testLog.getLogLine(0), testString);
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = new JSONObject();
+        json = testLog.toJson();
+        assertEquals(json.getJSONArray("History").toString(), "[\"No operations yet\"]");
     }
 }

@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -104,5 +105,12 @@ public class ColumnTest {
     void testGetRow() {
         Row checkRow = columnTest.getColumn(2);
         assertEquals(checkRow, row2);
+    }
+
+    @Test
+    void testToJson() {
+        JSONObject json = new JSONObject();
+        json = columnTest.toJson();
+        assertEquals(json.getJSONArray("Matrix").toString(), "[[3],[0],[-1]]");
     }
 }
