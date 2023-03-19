@@ -12,52 +12,65 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
-public class Keypad extends JPanel implements KeyListener {
+public class SupplementMenu extends JPanel implements KeyListener {
     private static final String CLR_STR = "CLR";
     private JButton[] keys;
     private JLabel label;
     private String code;
-    private ClickHandler keyHandler;
+    private SupplementMenu.ClickHandler keyHandler;
     private Main mainGUI;
 
     /**
      * Constructor creates keypad and code display area.
      */
-    public Keypad(Main main) {
+    public SupplementMenu(Main main) {
         mainGUI = main;
         code = "";
-        keyHandler = new ClickHandler();
+        keyHandler = new SupplementMenu.ClickHandler();
         setLayout(new BorderLayout());
-        JPanel keyPanel = new JPanel();
+        JPanel operationPanel = new JPanel();
 
-        label = new JLabel("Entry");
+        operationPanel.setLayout(new GridLayout(1,5));
+        addButtons(operationPanel);
+        add(operationPanel, BorderLayout.CENTER);
+
+        //label = new JLabel("Operations");
         Box hbox = Box.createHorizontalBox();
         hbox.add(Box.createHorizontalGlue());
-        hbox.add(label);
+        //hbox.add(label, CENTER_ALIGNMENT);
         hbox.add(Box.createHorizontalGlue());
         add(hbox, BorderLayout.NORTH);
 
-        keyPanel.setLayout(new GridLayout(3,3));
-        addButtons(keyPanel);
-        add(keyPanel, BorderLayout.CENTER);
 
     }
-
 
     /**
-     * Adds buttons to button panel
-     * @param p  the button panel
+     * Adds buttons to operations panel
+     * @param p  the operation panel
      */
     private void addButtons(JPanel p) {
-        keys = new JButton[12];
+        keys = new JButton[5];
 
-        for (int i = 0; i < 9; i++) {
-            keys[i] = new JButton(Integer.toString(i + 1));
-            keys[i].addActionListener(keyHandler);
-            p.add(keys[i]);
-        }
+        keys[0] = new JButton("Insert");
+        keys[0].addActionListener(keyHandler);
+        keys[1] = new JButton("Remove");
+        keys[1].addActionListener(keyHandler);
+        keys[2] = new JButton("Save");
+        keys[2].addActionListener(keyHandler);
+        keys[3] = new JButton("Load");
+        keys[3].addActionListener(keyHandler);
+        keys[4] = new JButton("History");
+        keys[4].addActionListener(keyHandler);
+
+        p.add(keys[0]);
+        p.add(keys[1]);
+        p.add(keys[2]);
+        p.add(keys[3]);
+        p.add(keys[4]);
+
     }
+
+
 
 
     /**
@@ -98,8 +111,4 @@ public class Keypad extends JPanel implements KeyListener {
         }
     }
 
-
-
 }
-
-
