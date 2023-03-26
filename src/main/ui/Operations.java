@@ -18,13 +18,13 @@ public class Operations extends JPanel implements KeyListener {
     private JLabel label;
     private String code;
     private Operations.ClickHandler keyHandler;
-    private Main mainGUI;
+    private CalculatorControllerUI calculatorControllerGUI;
 
     /**
      * Constructor creates keypad and code display area.
      */
-    public Operations(Main main) {
-        mainGUI = main;
+    public Operations(CalculatorControllerUI calculatorControllerUI) {
+        calculatorControllerGUI = calculatorControllerUI;
         code = "";
         keyHandler = new Operations.ClickHandler();
         setLayout(new BorderLayout());
@@ -80,9 +80,6 @@ public class Operations extends JPanel implements KeyListener {
             if (src.getText().equals(CLR_STR)) {
                 code = "";
             }
-
-            label.setText("label");
-            label.repaint();
         }
     }
 

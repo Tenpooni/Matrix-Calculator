@@ -239,6 +239,7 @@ public class Calculator implements Writable {
         }
     }
 
+
     //EFFECTS: Prints out previous calculator actions
     private void printHistory() {
         ArrayList<String> lines = matrix.getResult();
@@ -395,6 +396,12 @@ public class Calculator implements Writable {
             return false;
         }
     }
+
+
+    public Matrix getCalculatorMatrix() {
+        return this.matrix;
+    }
+
 
 }
 

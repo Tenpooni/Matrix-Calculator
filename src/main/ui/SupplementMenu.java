@@ -18,13 +18,13 @@ public class SupplementMenu extends JPanel implements KeyListener {
     private JLabel label;
     private String code;
     private SupplementMenu.ClickHandler keyHandler;
-    private Main mainGUI;
+    private CalculatorControllerUI calculatorControllerGUI;
 
     /**
      * Constructor creates keypad and code display area.
      */
-    public SupplementMenu(Main main) {
-        mainGUI = main;
+    public SupplementMenu(CalculatorControllerUI calculatorControllerUI) {
+        calculatorControllerGUI = calculatorControllerUI;
         code = "";
         keyHandler = new SupplementMenu.ClickHandler();
         setLayout(new BorderLayout());
