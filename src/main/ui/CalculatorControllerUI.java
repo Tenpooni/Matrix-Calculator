@@ -24,9 +24,7 @@ import java.util.Scanner;
 
 
 public class CalculatorControllerUI extends JFrame implements Writable {
-    private Calculator calculator;
     private JFrame frameObj;
-    private Keypad keypad;
     private Screen screen;
     private Operations operationPad;
     private SupplementMenu supplementMenu;
@@ -54,6 +52,8 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
         addScreen(frameObj);
         addOperationsPad(frameObj);
+
+        //checks this button can print loaded matrix.
         updateTestButton(frameObj);
 
         frameObj.setSize(450, 300);
@@ -124,6 +124,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
 
+
     //SET UP BUTTON PANELS
     private void addScreen(JFrame frame) {
         screen = new Screen(this);
@@ -135,6 +136,11 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         addKeyListener(operationPad);
         frame.add(operationPad);
     }
+
+
+
+
+
 
 
     //NOTE NOW CALLS CONTROLLER UI NOT CALCULATOR
@@ -155,6 +161,11 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
 
+
+    //current WIP
+    public Matrix getMatrix() {
+        return this.matrix;
+    }
 
 
 
@@ -204,22 +215,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
     //UNUSED YET BELOW, SAVED FOR REFERENCE
-
-    private void createCalculator() {
-        try {
-            this.calculator = new Calculator();
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to run application: file not found");
-        }
-    }
-
-    private void addKeyPad(JFrame frame) {
-        keypad = new Keypad(this);
-        addKeyListener(keypad);
-        frame.add(keypad);
-    }
-
-
 
     private void addSupplementMenu(JFrame frame) {
         supplementMenu = new SupplementMenu(this);

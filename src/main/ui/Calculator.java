@@ -384,7 +384,6 @@ public class Calculator implements Writable {
     // MODIFIES: this
     // EFFECTS: loads matrix from file
     private boolean loadMatrix() {
-
         try {
             matrix.setMatrix(jsonReader.readMatrix());
             matrix.setLog(jsonReader.readLog());
