@@ -53,6 +53,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         addScreen(frameObj);
+        addOperationsPad(frameObj);
         updateTestButton(frameObj);
 
         frameObj.setSize(450, 300);
@@ -70,7 +71,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
     //IMPORTING METHODS FROM CALCULATOR
 
-    // MODIFIES: this
+
     // EFFECTS: loads matrix from file
     private void loadMatrix() {
         try {
@@ -85,15 +86,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     }
 
 
-    //EFFECTS: Prints visual representation of matrix as one row per line
-    private void printMatrixConsole() {
-        for (String str : matrix.printMatrix()) {
-            System.out.println(str);
-        }
-    }
-
-
-    //EFFECTS: Prints visual representation of matrix as one row per line
+    //EFFECTS: Returns string representation of matrix as one row per line using html
     private String printMatrix() {
         String lineStart = "<html>";
         String lineEnd = "</html>";
@@ -115,9 +108,10 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         screen.refreshLabel(str);
     }
 
+    //FOR TESTING BUTTONS
     private void updateTestButton(JFrame frame) {
-        JButton advanceButton = new JButton("Test");
-        advanceButton.setActionCommand("test");
+        JButton advanceButton = new JButton("Load Matrix");
+        advanceButton.setActionCommand("Load Matrix");
         advanceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //System.out.println(printMatrix());
@@ -128,15 +122,19 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         frame.add(advanceButton);
     }
 
+
+
+    //SET UP BUTTON PANELS
     private void addScreen(JFrame frame) {
         screen = new Screen(this);
         frame.add(screen);
     }
 
-
-
-
-
+    private void addOperationsPad(JFrame frame) {
+        operationPad = new Operations(this);
+        addKeyListener(operationPad);
+        frame.add(operationPad);
+    }
 
 
     //NOTE NOW CALLS CONTROLLER UI NOT CALCULATOR
@@ -146,7 +144,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application: file not found");
         }
-        //new CalculatorControllerUI();
     }
 
 
@@ -204,6 +201,8 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
 
+
+
     //UNUSED YET BELOW, SAVED FOR REFERENCE
 
     private void createCalculator() {
@@ -220,11 +219,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         frame.add(keypad);
     }
 
-    private void addOperationsPad(JFrame frame) {
-        operationPad = new Operations(this);
-        addKeyListener(operationPad);
-        frame.add(operationPad);
-    }
+
 
     private void addSupplementMenu(JFrame frame) {
         supplementMenu = new SupplementMenu(this);
