@@ -26,7 +26,7 @@ public class Screen extends JPanel {
         setLayout(new BorderLayout());
         JPanel operationPanel = new JPanel();
 
-        label = new JLabel("Testing");
+        label = new JLabel("Matrix Calculator");
         Box hbox = Box.createHorizontalBox();
         hbox.add(Box.createHorizontalGlue());
         hbox.add(label, CENTER_ALIGNMENT);

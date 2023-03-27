@@ -1,25 +1,18 @@
 package ui;
 
 import model.Matrix;
-import model.Row;
 import persistence.Writable;
-import model.Log;
 import org.json.JSONObject;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import persistence.Writable;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -28,6 +21,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     private Screen screen;
     private Operations operationPad;
     private SupplementMenu supplementMenu;
+    private Editor editor;
 
     private int columnCount;
     private int rowCount;
@@ -46,15 +40,16 @@ public class CalculatorControllerUI extends JFrame implements Writable {
      */
     public CalculatorControllerUI() throws FileNotFoundException {
         frameObj = new JFrame();
-        frameObj.setLayout(new GridLayout(3,1));
+        frameObj.setLayout(new GridLayout(4,1));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         addScreen(frameObj);
         addOperationsPad(frameObj);
-
+        addSupplementMenu(frameObj);
+        addMatrixEditor(frameObj);
         //checks this button can print loaded matrix.
-        updateTestButton(frameObj);
+        //updateTestButton(frameObj);
 
         frameObj.setSize(450, 300);
         frameObj.setVisible(true);
@@ -65,24 +60,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         jsonReader = new JsonReader(JSON_STORE);
 
         loadMatrix();
-    }
-
-
-
-    //IMPORTING METHODS FROM CALCULATOR
-
-
-    // EFFECTS: loads matrix from file
-    private void loadMatrix() {
-        try {
-            matrix.setMatrix(jsonReader.readMatrix());
-            matrix.setLog(jsonReader.readLog());
-
-            this.rowCount = matrix.getMatrixColumnSize();
-            this.columnCount = matrix.getMatrixRowSize();
-        } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
-        }
     }
 
 
@@ -137,6 +114,18 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         frame.add(operationPad);
     }
 
+    private void addSupplementMenu(JFrame frame) {
+        supplementMenu = new SupplementMenu(this);
+        addKeyListener(supplementMenu);
+        frame.add(supplementMenu);
+    }
+
+    private void addMatrixEditor(JFrame frame) {
+        editor = new Editor(this);
+        addKeyListener(editor);
+        frame.add(editor);
+    }
+
 
 
 
@@ -186,14 +175,31 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     }
 
     // EFFECTS: saves matrix to file including history
-    private void saveMatrix() {
+    public void saveMatrix() {
         try {
             jsonWriter.open();
             jsonWriter.write(matrix);
             jsonWriter.close();
             System.out.println("Saved matrix to " + JSON_STORE);
+            //screen.refreshLabel("Saved matrix to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
+            //screen.refreshLabel("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // EFFECTS: loads matrix from file
+    public void loadMatrix() {
+        try {
+            matrix.setMatrix(jsonReader.readMatrix());
+            matrix.setLog(jsonReader.readLog());
+
+            this.rowCount = matrix.getMatrixColumnSize();
+            this.columnCount = matrix.getMatrixRowSize();
+
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+            //screen.refreshLabel("Unable to read from file: " + JSON_STORE);
         }
     }
 
@@ -204,22 +210,8 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
 
-
-
-
-
-
-
-
-
-
-
     //UNUSED YET BELOW, SAVED FOR REFERENCE
 
-    private void addSupplementMenu(JFrame frame) {
-        supplementMenu = new SupplementMenu(this);
-        addKeyListener(supplementMenu);
-        frame.add(supplementMenu);
-    }
+
 
 }
