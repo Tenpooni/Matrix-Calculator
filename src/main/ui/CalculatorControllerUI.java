@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 
-public class CalculatorControllerUI extends JFrame {
+public class CalculatorControllerUI extends JFrame implements Writable {
     private Calculator calculator;
     private JFrame frameObj;
     private Keypad keypad;
@@ -38,11 +38,15 @@ public class CalculatorControllerUI extends JFrame {
 
     boolean runCalc = true;
 
+    private static final String JSON_STORE = "./data/matrix.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
 
     /**
      * Constructor sets up button panel, key pad and visual alarm status window.
      */
-    public CalculatorControllerUI() {
+    public CalculatorControllerUI() throws FileNotFoundException {
         frameObj = new JFrame();
         frameObj.setLayout(new GridLayout(3,1));
 
@@ -56,42 +60,69 @@ public class CalculatorControllerUI extends JFrame {
         pack();
         setVisible(true);
 
-        createCalculator();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
-
+        loadMatrix();
     }
 
-    public String updateMatrix() {
+
+
+    //IMPORTING METHODS FROM CALCULATOR
+
+    // MODIFIES: this
+    // EFFECTS: loads matrix from file
+    private void loadMatrix() {
+        try {
+            matrix.setMatrix(jsonReader.readMatrix());
+            matrix.setLog(jsonReader.readLog());
+
+            this.rowCount = matrix.getMatrixColumnSize();
+            this.columnCount = matrix.getMatrixRowSize();
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+
+    //EFFECTS: Prints visual representation of matrix as one row per line
+    private void printMatrixConsole() {
+        for (String str : matrix.printMatrix()) {
+            System.out.println(str);
+        }
+    }
+
+
+    //EFFECTS: Prints visual representation of matrix as one row per line
+    private String printMatrix() {
         String lineStart = "<html>";
         String lineEnd = "</html>";
         String lineBreak = "<br>";
 
         String temp = "";
 
-        int rowSize = matrix.getMatrixRowSize();
-        ArrayList<String> testList = matrix.getResult();
-
-        for (int i = 0; i < rowSize; i++) {
-            temp = testList.get(i) + lineBreak + temp;
+        for (String str : matrix.printMatrix()) {
+            temp = temp + str + lineBreak;
         }
+
         temp = lineStart + temp + lineEnd;
         return temp;
     }
 
-
-    private void refreshScreen() {
-        String str = updateMatrix();
+    //CALL THIS TO REFRESH MATRIX ON SCREEN
+    public void refreshScreen() {
+        String str = printMatrix();
         screen.refreshLabel(str);
     }
-
-
 
     private void updateTestButton(JFrame frame) {
         JButton advanceButton = new JButton("Test");
         advanceButton.setActionCommand("test");
         advanceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //System.out.println(printMatrix());
                 refreshScreen();
+
             }
         });
         frame.add(advanceButton);
@@ -102,13 +133,20 @@ public class CalculatorControllerUI extends JFrame {
         frame.add(screen);
     }
 
+
+
+
+
+
+
+    //NOTE NOW CALLS CONTROLLER UI NOT CALCULATOR
     public static void main(String[] args) {
-        //try {
-            //new Calculator();
-        //} catch (FileNotFoundException e) {
-            //System.out.println("Unable to run application: file not found");
-        //}
-        new CalculatorControllerUI();
+        try {
+            new CalculatorControllerUI();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to run application: file not found");
+        }
+        //new CalculatorControllerUI();
     }
 
 
@@ -124,10 +162,53 @@ public class CalculatorControllerUI extends JFrame {
 
 
 
+
+
+
+
+    //CODE DIRECTLY TAKEN FROM CALCULATOR FOR JSON REASONS
+
+    //EFFECTS: write both matrix and history log as JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Matrix", matrix.matrixToJson());
+        json.put("History", matrix.logToJson());
+        return json;
+    }
+
+    // EFFECTS: saves matrix to file including history
+    private void saveMatrix() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(matrix);
+            jsonWriter.close();
+            System.out.println("Saved matrix to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //UNUSED YET BELOW, SAVED FOR REFERENCE
+
     private void createCalculator() {
         try {
             this.calculator = new Calculator();
-            this.matrix = this.calculator.getCalculatorMatrix();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application: file not found");
         }
@@ -150,7 +231,5 @@ public class CalculatorControllerUI extends JFrame {
         addKeyListener(supplementMenu);
         frame.add(supplementMenu);
     }
-
-
 
 }

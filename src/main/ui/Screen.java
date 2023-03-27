@@ -16,9 +16,6 @@ public class Screen extends JPanel {
     private JLabel label;
     private String text;
     private CalculatorControllerUI calculatorControllerGUI;
-    private Calculator calculator;
-
-
 
     /**
      * Constructor creates keypad and code display area.
@@ -26,7 +23,6 @@ public class Screen extends JPanel {
     public Screen(CalculatorControllerUI calculatorControllerUI) {
         calculatorControllerGUI = calculatorControllerUI;
         text = "";
-        //keyHandler = new Screen.ClickHandler();
         setLayout(new BorderLayout());
         JPanel operationPanel = new JPanel();
 

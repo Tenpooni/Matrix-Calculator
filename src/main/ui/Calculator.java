@@ -359,6 +359,7 @@ public class Calculator implements Writable {
         }
     }
 
+
     //EFFECTS: write both matrix and history log as JSONObject
     @Override
     public JSONObject toJson() {
@@ -395,11 +396,6 @@ public class Calculator implements Writable {
             System.out.println("Unable to read from file: " + JSON_STORE);
             return false;
         }
-    }
-
-
-    public Matrix getCalculatorMatrix() {
-        return this.matrix;
     }
 
 
