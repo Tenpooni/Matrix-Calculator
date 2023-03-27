@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -23,11 +24,16 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
     private CalculatorControllerUI calculatorControllerGUI;
     private JFormattedTextField entryField1;
     private JFormattedTextField entryField2;
-    private int r1;
-    private int r2;
+    private JFormattedTextField entryField3;
+    private int e1;
+    private int e2;
+    private int e3;
+    int valueToPass;
     private NumberFormat numberFormat;
     private Matrix matrix;
-    private boolean insertingRow;
+    private boolean insertingMatrix = false;
+
+    private ArrayList<Integer> values = new ArrayList<Integer>();
 
     /**
      * Constructor creates keypad and code display area.
@@ -76,7 +82,7 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         keys[1].addActionListener(keyHandler);
         keys[2] = new JButton("Remove row");
         keys[2].addActionListener(keyHandler);
-        keys[3] = new JButton("Confirm");
+        keys[3] = new JButton("Enter");
         keys[3].addActionListener(keyHandler);
 
         p.add(keys[0]);
@@ -88,7 +94,7 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
     }
 
     private JPanel addEntry() {
-        JPanel p = new JPanel(new GridLayout(2, 2));
+        JPanel p = new JPanel(new GridLayout(3, 2));
 
         entryField1 = new JFormattedTextField(numberFormat);
         entryField1.setValue(0);
@@ -98,13 +104,20 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         entryField2.setValue(0);
         entryField2.addPropertyChangeListener(this);
 
+        entryField3 = new JFormattedTextField(numberFormat);
+        entryField3.setValue(0);
+        entryField3.addPropertyChangeListener(this);
+
         JLabel label1 = new JLabel("Enter Row : ");
-        JLabel label2 = new JLabel("Enter Column/Value : ");
+        JLabel label2 = new JLabel("Enter Column : ");
+        JLabel label3 = new JLabel("Enter Value : ");
 
         p.add(label1);
         p.add(entryField1);
         p.add(label2);
         p.add(entryField2);
+        p.add(label3);
+        p.add(entryField3);
 
         return p;
     }
@@ -115,9 +128,11 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
     public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         if (source == entryField1) {
-            r1 = ((Number)entryField1.getValue()).intValue();
+            e1 = ((Number)entryField1.getValue()).intValue();
         } else if (source == entryField2) {
-            r2 = ((Number)entryField2.getValue()).intValue();
+            e2 = ((Number)entryField2.getValue()).intValue();
+        } else if (source == entryField3) {
+            e3 = ((Number)entryField3.getValue()).intValue();
         }
     }
 
@@ -129,14 +144,38 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         public void actionPerformed(ActionEvent e) {
             JButton src = (JButton) e.getSource();
 
-            if (src.getText().equals("Test")) {
+            if (src.getText().equals("Insert row")) {
                 //stub
-            } else {
-                //stub
+            } else if (src.getText().equals("Enter")) {
+
+                if (insertingMatrix) {
+                    if (values.size() < (e1 * e2)) {
+                        advance(e3);
+                    } else if (values.size() >= (e1 * e2)) {
+                        calculatorControllerGUI.setUpMatrixValues(e1, e2);
+                        values.clear();
+                        insertingMatrix = false;
+                    }
+                }
+            } else if (src.getText().equals("New")) {
+                if (e1 > 0 && e2 > 0) {
+                    insertingMatrix = true;
+                }
             }
 
         }
     }
+
+    private void advance(int val) {
+        values.add(val);
+    }
+
+    public ArrayList getVal() {
+        return values;
+    }
+
+
+
 
     @Override
     public void keyPressed(KeyEvent ke) {

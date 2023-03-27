@@ -1,6 +1,7 @@
 package ui;
 
 import model.Matrix;
+import model.Row;
 import persistence.Writable;
 import org.json.JSONObject;
 import persistence.JsonReader;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -27,8 +29,9 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     private int rowCount;
     private final Scanner input = new Scanner(System.in);
     Matrix matrix = new Matrix();
+    boolean valueToPass = false;
 
-    boolean runCalc = true;
+    boolean confirmed = false;
 
     private static final String JSON_STORE = "./data/matrix.json";
     private JsonWriter jsonWriter;
@@ -85,22 +88,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         screen.refreshLabel(str);
     }
 
-    //FOR TESTING BUTTONS
-    private void updateTestButton(JFrame frame) {
-        JButton advanceButton = new JButton("Load Matrix");
-        advanceButton.setActionCommand("Load Matrix");
-        advanceButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(printMatrix());
-                refreshScreen();
-
-            }
-        });
-        frame.add(advanceButton);
-    }
-
-
-
 
     //SET UP BUTTON PANELS
     private void addScreen(JFrame frame) {
@@ -127,11 +114,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     }
 
 
-
-
-
-
-
     //NOTE NOW CALLS CONTROLLER UI NOT CALCULATOR
     public static void main(String[] args) {
         try {
@@ -141,10 +123,38 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         }
     }
 
+    public Matrix getMatrix() {
+        return this.matrix;
+    }
 
 
+    public void setUpMatrixValues(int e1, int e2) {
+        ArrayList<Integer> vals = editor.getVal();
 
+        this.rowCount = e1;
+        this.columnCount = e2;
 
+        this.matrix.newMatrix(rowCount);
+        matrix.setRowCount(e1);
+        matrix.setColumnCount(e2);
+
+        System.out.println(rowCount);
+        System.out.println(columnCount);
+
+        for (int i = 0; i < rowCount; i++) {
+
+            Row tempRow = new Row(columnCount);
+
+            for (int j = 0; j < columnCount; j++) {
+
+                int entry = vals.get(i * (columnCount) + j);
+                tempRow.setRow(j, entry);
+
+            }
+            matrix.setColumn(i, tempRow);
+            refreshScreen();
+        }
+    }
 
 
 
@@ -152,9 +162,27 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
     //current WIP
-    public Matrix getMatrix() {
-        return this.matrix;
+
+
+
+    //FOR TESTING BUTTONS
+    private void updateTestButton(JFrame frame) {
+        JButton advanceButton = new JButton("Load Matrix");
+        advanceButton.setActionCommand("Load Matrix");
+        advanceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println(printMatrix());
+                refreshScreen();
+
+            }
+        });
+        frame.add(advanceButton);
     }
+
+
+
+
+
 
 
 
@@ -202,16 +230,4 @@ public class CalculatorControllerUI extends JFrame implements Writable {
             //screen.refreshLabel("Unable to read from file: " + JSON_STORE);
         }
     }
-
-
-
-
-
-
-
-
-    //UNUSED YET BELOW, SAVED FOR REFERENCE
-
-
-
 }
