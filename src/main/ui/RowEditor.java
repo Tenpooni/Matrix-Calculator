@@ -46,7 +46,7 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
         setLayout(new BorderLayout());
         JPanel operationPanel = new JPanel();
 
-        label = new JLabel("");
+        label = new JLabel("Row Editor");
         Box hbox = Box.createHorizontalBox();
         hbox.add(Box.createHorizontalGlue());
         hbox.add(label, CENTER_ALIGNMENT);
@@ -69,12 +69,12 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
      *
      */
     private JPanel addButtons() {
-        JPanel p = new JPanel(new GridLayout(1, 3));
+        JPanel p = new JPanel(new GridLayout(3, 1));
         keys = new JButton[3];
 
-        keys[0] = new JButton("Insert Row");
+        keys[0] = new JButton("Insert row");
         keys[0].addActionListener(keyHandler);
-        keys[1] = new JButton("Remove Row");
+        keys[1] = new JButton("Remove row");
         keys[1].addActionListener(keyHandler);
         keys[2] = new JButton("Submit");
         keys[2].addActionListener(keyHandler);
@@ -98,8 +98,8 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
         entryField2.addPropertyChangeListener(this);
 
 
-        JLabel label1 = new JLabel("Enter Row : ");
-        JLabel label2 = new JLabel("Enter Values : ");
+        JLabel label1 = new JLabel("Enter row to edit : ");
+        JLabel label2 = new JLabel("Enter values : ");
 
         p.add(label1);
         p.add(entryField1);
@@ -130,7 +130,9 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
             JButton src = (JButton) e.getSource();
 
             if (src.getText().equals("Remove row")) {
-                //stub
+                if (e1 > 0 && e1 <= matrix.getMatrixColumnSize() + 1) {
+                    calculatorControllerGUI.removeRow(e1);
+                }
             } else if (src.getText().equals("Submit")) {
                 if (insertingRow) {
                     if (values.size() < matrix.getMatrixRowSize()) {
@@ -141,7 +143,7 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
                         insertingRow = false;
                     }
                 }
-            } else if (src.getText().equals("Insert Row")) {
+            } else if (src.getText().equals("Insert row")) {
                 if (e1 > 0 && e1 <= matrix.getMatrixColumnSize() + 1) {
                     insertingRow = true;
                 }

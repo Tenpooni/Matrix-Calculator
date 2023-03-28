@@ -57,7 +57,7 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         hbox.add(Box.createHorizontalGlue());
         add(hbox, BorderLayout.NORTH);
 
-        operationPanel.setLayout(new GridLayout(2,1));
+        operationPanel.setLayout(new GridLayout(1,2));
 
         operationPanel.add(addEntry());
         operationPanel.add(addButtons());
@@ -73,12 +73,12 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
      *
      */
     private JPanel addButtons() {
-        JPanel p = new JPanel(new GridLayout(1, 2));
+        JPanel p = new JPanel(new GridLayout(2, 1));
         keys = new JButton[2];
 
         keys[0] = new JButton("New matrix");
         keys[0].addActionListener(keyHandler);
-        keys[1] = new JButton("Submit value");
+        keys[1] = new JButton("Submit");
         keys[1].addActionListener(keyHandler);
 
         p.add(keys[0]);
@@ -102,9 +102,9 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         entryField3.setValue(0);
         entryField3.addPropertyChangeListener(this);
 
-        JLabel label1 = new JLabel("Enter Row : ");
-        JLabel label2 = new JLabel("Enter Column : ");
-        JLabel label3 = new JLabel("Enter Value : ");
+        JLabel label1 = new JLabel("Enter new row size : ");
+        JLabel label2 = new JLabel("Enter new column size : ");
+        JLabel label3 = new JLabel("Enter values : ");
 
         p.add(label1);
         p.add(entryField1);
@@ -140,7 +140,7 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
 
             if (src.getText().equals("Insert row")) {
                 //stub
-            } else if (src.getText().equals("Submit value")) {
+            } else if (src.getText().equals("Submit")) {
                 if (insertingMatrix) {
                     if (values.size() < (e1 * e2)) {
                         advance(e3);

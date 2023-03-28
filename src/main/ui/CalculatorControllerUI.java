@@ -57,7 +57,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         //checks this button can print loaded matrix.
         //updateTestButton(frameObj);
 
-        frameObj.setSize(450, 300);
+        frameObj.setSize(750, 500);
         frameObj.setVisible(true);
         pack();
         setVisible(true);
@@ -181,6 +181,19 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         //to refresh
         rowCount = matrix.getMatrixColumnSize();
         //matrix.enterVector(e1, "Added");
+
+        //update to screen
+        refreshScreen();
+    }
+
+    public void removeRow(int e1) {
+
+        //checks this isn't last row
+        if (this.rowCount > 1) {
+            matrix.removeMatrixRow(e1 - 1);
+            rowCount = matrix.getMatrixColumnSize();
+            //matrix.enterVector(index, "Removed");
+        }
 
         //update to screen
         refreshScreen();
