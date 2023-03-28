@@ -12,17 +12,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+//Panel containing supplement menu GUI elements
 public class SupplementMenu extends JPanel implements KeyListener {
-    private static final String CLR_STR = "CLR";
     private JButton[] keys;
     private JLabel label;
     private String code;
     private SupplementMenu.ClickHandler keyHandler;
     private CalculatorControllerUI calculatorControllerGUI;
 
-    /**
-     * Constructor creates keypad and code display area.
-     */
+    //Constructor creates supplemental menu display area.
     public SupplementMenu(CalculatorControllerUI calculatorControllerUI) {
         calculatorControllerGUI = calculatorControllerUI;
         code = "";
@@ -42,10 +40,8 @@ public class SupplementMenu extends JPanel implements KeyListener {
 
     }
 
-    /**
-     * Adds buttons to operations panel
-     * @param p  the operation panel
-     */
+    //MODIFIES: this
+    //EFFECTS: Adds buttons to operation panel
     private void addButtons(JPanel p) {
         keys = new JButton[3];
 
@@ -63,11 +59,7 @@ public class SupplementMenu extends JPanel implements KeyListener {
     }
 
 
-
-
-    /**
-     * A listener for key events.
-     */
+    //EFFECTS: Listener for events in menu: load, save and history
     private class ClickHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -79,6 +71,8 @@ public class SupplementMenu extends JPanel implements KeyListener {
             } else if (src.getText().equals("Save")) {
                 calculatorControllerGUI.saveMatrix();
                 calculatorControllerGUI.refreshScreen();
+            } else if (src.getText().equals("History")) {
+                calculatorControllerGUI.showHistory();
             }
 
         }

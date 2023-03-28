@@ -14,8 +14,8 @@ import java.text.NumberFormat;
 
 import javax.swing.*;
 
+//Panel containing Operation GUI elements
 public class Operations extends JPanel implements KeyListener, PropertyChangeListener {
-    private static final String CLR_STR = "CLR";
     private JButton[] keys;
     private JLabel label;
     private String code;
@@ -28,9 +28,7 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
     private NumberFormat numberFormat;
     private Matrix matrix;
 
-    /**
-     * Constructor creates keypad and code display area.
-     */
+    //Constructor creates Operations display area.
     public Operations(CalculatorControllerUI calculatorControllerUI) {
         calculatorControllerGUI = calculatorControllerUI;
         matrix = calculatorControllerGUI.getMatrix();
@@ -60,10 +58,8 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
 
     }
 
-    /**
-     * Adds buttons to operations panel
-     *
-     */
+    //MODIFIES: this
+    //EFFECTS: Adds buttons to operation panel
     private JPanel addButtons() {
         JPanel p = new JPanel(new GridLayout(1, 4));
         keys = new JButton[4];
@@ -85,6 +81,8 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
         return p;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Adds textfield and labels to operation panel
     private JPanel addEntry() {
         JPanel p = new JPanel(new GridLayout(2, 2));
 
@@ -109,7 +107,7 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
     }
 
 
-    //verifies the entries are integer
+    //EFFECTS: verifies the entries are integer
     public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         if (source == entryField1) {
@@ -121,9 +119,7 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
     }
 
 
-    /**
-     * A listener for key events.
-     */
+    //EFFECTS: Listener for operation events on matrix
     private class ClickHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -146,6 +142,8 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
         }
     }
 
+    //MODIFIES: matrix
+    //EFFECTS: conduct multiplication of constant with given row
     private void verifyMultiply(int val1, int val2) {
         if (val1 > 0 && val1 <= matrix.getMatrixColumnSize()) {
             float c = val2;
@@ -154,6 +152,8 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
         }
     }
 
+    //MODIFIES: matrix
+    //EFFECTS: conduct addition of two given rows, replacing the second
     private void verifyRowAddition(int val1, int val2) {
         if (val1 > 0 && val1 <= matrix.getMatrixColumnSize()
                 && val2 > 0 && val2 <= matrix.getMatrixColumnSize() && val1 != val2) {
@@ -161,6 +161,8 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
         }
     }
 
+    //MODIFIES: matrix
+    //EFFECTS: conduct subtraction of two given rows, replacing the second
     private void verifyRowSubtraction(int val1, int val2) {
         if (val1 > 0 && val1 <= matrix.getMatrixColumnSize()
                 && val2 > 0 && val2 <= matrix.getMatrixColumnSize() && val1 != val2) {
@@ -168,6 +170,8 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
         }
     }
 
+    //MODIFIES: matrix
+    //EFFECTS: conduct swap of two given rows
     private void verifyRowSwap(int val1, int val2) {
         if (val1 > 0 && val1 <= matrix.getMatrixColumnSize()
                 && val2 > 0 && val2 <= matrix.getMatrixColumnSize() && val1 != val2) {

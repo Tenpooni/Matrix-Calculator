@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+//Panel containing Row Editor GUI elements
 public class RowEditor extends JPanel implements KeyListener, PropertyChangeListener {
     private JButton[] keys;
     private JLabel label;
@@ -25,15 +26,13 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
     private JFormattedTextField entryField2;
     private int e1;
     private int e2;
-    private NumberFormat numberFormat;
+    private final NumberFormat numberFormat;
     private Matrix matrix;
     private boolean insertingRow = false;
 
-    private ArrayList<Integer> values = new ArrayList<Integer>();
+    private ArrayList<Integer> values = new ArrayList<>();
 
-    /**
-     * Constructor creates keypad and code display area.
-     */
+    //Constructor creates Row Editor display area.
     public RowEditor(CalculatorControllerUI calculatorControllerUI) {
         calculatorControllerGUI = calculatorControllerUI;
         matrix = calculatorControllerGUI.getMatrix();
@@ -60,14 +59,15 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
 
 
         add(operationPanel, BorderLayout.CENTER);
-
     }
 
+    //EFFECTS: getter for list of values
+    public ArrayList getVal() {
+        return values;
+    }
 
-    /**
-     * Adds buttons to operations panel
-     *
-     */
+    //MODIFIES: this
+    //EFFECTS: Adds buttons to operation panel
     private JPanel addButtons() {
         JPanel p = new JPanel(new GridLayout(3, 1));
         keys = new JButton[3];
@@ -86,6 +86,8 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
         return p;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Adds textfield and labels to operation panel
     private JPanel addEntry() {
         JPanel p = new JPanel(new GridLayout(2, 2));
 
@@ -111,7 +113,7 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
 
 
 
-    //verifies the entries are integer
+    //EFFECTS: verifies the entries are integer
     public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         if (source == entryField1) {
@@ -121,9 +123,7 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
         }
     }
 
-    /**
-     * A listener for key events.
-     */
+    //EFFECTS: Listener for key events: Insert row, Remove row and Submit
     private class ClickHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -136,7 +136,8 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
             } else if (src.getText().equals("Submit")) {
                 if (insertingRow) {
                     if (values.size() < matrix.getMatrixRowSize()) {
-                        advance(e2);
+                        //advance(e2);
+                        values.add(e2);
                     } else if (values.size() >= matrix.getMatrixRowSize()) {
                         calculatorControllerGUI.setUpNewRow(e1);
                         values.clear();
@@ -155,12 +156,6 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
     private void advance(int val) {
         values.add(val);
     }
-
-    public ArrayList getVal() {
-        return values;
-    }
-
-
 
 
     @Override

@@ -1,6 +1,10 @@
 {
     "Matrix": [
         [
+            0,
+            0
+        ],
+        [
             1,
             2
         ],
@@ -11,6 +15,7 @@
     ],
     "History": [
         "R0 swap R1",
-        "R0 swap R1"
+        "R0 swap R1",
+        "Added row vector at R2"
     ]
 }

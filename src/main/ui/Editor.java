@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-
+//Panel containing Matrix Editor GUI elements
 public class Editor extends JPanel implements KeyListener, PropertyChangeListener {
     private JButton[] keys;
     private JLabel label;
@@ -35,9 +35,8 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
 
     private ArrayList<Integer> values = new ArrayList<Integer>();
 
-    /**
-     * Constructor creates keypad and code display area.
-     */
+
+    //Constructor creates Matrix Editor display area.
     public Editor(CalculatorControllerUI calculatorControllerUI) {
         calculatorControllerGUI = calculatorControllerUI;
         matrix = calculatorControllerGUI.getMatrix();
@@ -67,11 +66,13 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
 
     }
 
+    //EFFECTS: getter for list of values
+    public ArrayList getVal() {
+        return values;
+    }
 
-    /**
-     * Adds buttons to operations panel
-     *
-     */
+    //MODIFIES: this
+    //EFFECTS: Adds buttons to operation panel
     private JPanel addButtons() {
         JPanel p = new JPanel(new GridLayout(2, 1));
         keys = new JButton[2];
@@ -87,6 +88,8 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         return p;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Adds textfield and labels to operation panel
     private JPanel addEntry() {
         JPanel p = new JPanel(new GridLayout(3, 2));
 
@@ -118,7 +121,7 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
 
 
 
-    //verifies the entries are integer
+    //EFFECTS: verifies the entries are in number format
     public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         if (source == entryField1) {
@@ -130,29 +133,27 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
         }
     }
 
-    /**
-     * A listener for key events.
-     */
+    //EFFECTS: Listener for key events: New matrix and Submit
     private class ClickHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton src = (JButton) e.getSource();
 
-            if (src.getText().equals("Insert row")) {
-                //stub
+            if (src.getText().equals("New matrix")) {
+                if (e1 > 0 && e2 > 0) {
+                    insertingMatrix = true;
+                    calculatorControllerGUI.clearHistory();
+                }
             } else if (src.getText().equals("Submit")) {
                 if (insertingMatrix) {
                     if (values.size() < (e1 * e2)) {
-                        advance(e3);
+                        //advance(e3);
+                        values.add(e3);
                     } else if (values.size() >= (e1 * e2)) {
                         calculatorControllerGUI.setUpMatrixValues(e1, e2);
                         values.clear();
                         insertingMatrix = false;
                     }
-                }
-            } else if (src.getText().equals("New matrix")) {
-                if (e1 > 0 && e2 > 0) {
-                    insertingMatrix = true;
                 }
             }
 
@@ -162,12 +163,6 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
     private void advance(int val) {
         values.add(val);
     }
-
-    public ArrayList getVal() {
-        return values;
-    }
-
-
 
 
     @Override
@@ -184,8 +179,6 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
     public void keyTyped(KeyEvent ke) {
 
     }
-
-
 
 }
 

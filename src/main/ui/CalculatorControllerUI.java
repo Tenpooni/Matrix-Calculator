@@ -9,17 +9,14 @@ import persistence.JsonWriter;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-
+//Matrix Calculator GUI
 public class CalculatorControllerUI extends JFrame implements Writable {
-    private JFrame frameObj;
+    private final JFrame frameObj;
     private Screen screen;
     private Operations operationPad;
     private SupplementMenu supplementMenu;
@@ -28,11 +25,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
     private int columnCount;
     private int rowCount;
-    private final Scanner input = new Scanner(System.in);
     Matrix matrix = new Matrix();
-    boolean valueToPass = false;
-
-    boolean confirmed = false;
 
     private static final String JSON_STORE = "./data/matrix.json";
     private JsonWriter jsonWriter;
@@ -40,7 +33,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
 
     /**
-     * Constructor sets up button panel, key pad and visual alarm status window.
+     * Constructor sets up button panel, key pad and visual matrix window.
      */
     public CalculatorControllerUI() throws FileNotFoundException {
         frameObj = new JFrame();
@@ -53,9 +46,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         addMatrixEditor(frameObj);
         addRowEditor(frameObj);
         addSupplementMenu(frameObj);
-
-        //checks this button can print loaded matrix.
-        //updateTestButton(frameObj);
 
         frameObj.setSize(750, 500);
         frameObj.setVisible(true);
@@ -85,45 +75,76 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         return temp;
     }
 
-    //CALL THIS TO REFRESH MATRIX ON SCREEN
+    //EFFECTS: Returns string representation of history one row per line using html
+    private String printHistory() {
+        String lineStart = "<html>";
+        String lineEnd = "</html>";
+        String lineBreak = "<br>";
+
+        String temp = "";
+
+        for (String str : matrix.getResult()) {
+            System.out.println(str);
+            temp = temp + str + lineBreak;
+        }
+
+        temp = lineStart + temp + lineEnd;
+        return temp;
+    }
+
+    //EFFECTS: prints latest matrix state to screen
     public void refreshScreen() {
         String str = printMatrix();
         screen.refreshLabel(str);
     }
 
+    //EFFECTS: prints history to screen
+    public void showHistory() {
+        String str = printHistory();
+        screen.refreshLabel(str);
+    }
 
-    //SET UP BUTTON PANELS
+
+    //EFFECTS: sets up screen GUI panel
     private void addScreen(JFrame frame) {
         screen = new Screen(this);
         frame.add(screen);
     }
 
+    //EFFECTS: sets up operations menu panel
     private void addOperationsPad(JFrame frame) {
         operationPad = new Operations(this);
         addKeyListener(operationPad);
         frame.add(operationPad);
     }
 
+    //EFFECTS: sets up matrix editor menu panel
     private void addMatrixEditor(JFrame frame) {
         editor = new Editor(this);
         addKeyListener(editor);
         frame.add(editor);
     }
 
+    //EFFECTS: sets up row editor menu panel
     private void addRowEditor(JFrame frame) {
         rowEditor = new RowEditor(this);
         addKeyListener(rowEditor);
         frame.add(rowEditor);
     }
 
+    //EFFECTS: sets up supplement menu panel
     private void addSupplementMenu(JFrame frame) {
         supplementMenu = new SupplementMenu(this);
         addKeyListener(supplementMenu);
         frame.add(supplementMenu);
     }
 
+    //EFFECTS: matrix getter
+    public Matrix getMatrix() {
+        return this.matrix;
+    }
 
-    //NOTE NOW CALLS CONTROLLER UI NOT CALCULATOR
+
     public static void main(String[] args) {
         try {
             new CalculatorControllerUI();
@@ -132,14 +153,11 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         }
     }
 
-    //EFFECTS: matrix getter
-    public Matrix getMatrix() {
-        return this.matrix;
-    }
 
-    //EFFECTS: called by Editor, creates new matrix
+    //MODIFIES: this.matrix
+    //EFFECTS: creates new matrix
     public void setUpMatrixValues(int e1, int e2) {
-        ArrayList<Integer> vals = editor.getVal();
+        ArrayList<Integer> valueList = editor.getVal();
 
         this.rowCount = e1;
         this.columnCount = e2;
@@ -157,7 +175,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
 
             for (int j = 0; j < columnCount; j++) {
 
-                int entry = vals.get(i * (columnCount) + j);
+                int entry = valueList.get(i * (columnCount) + j);
                 tempRow.setRow(j, entry);
 
             }
@@ -166,75 +184,46 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         }
     }
 
+    //MODIFIES: this.matrix
+    //EFFECTS: clears entries in log
+    public void clearHistory() {
+        matrix.clearHistory();
+    }
 
+
+    //MODIFIES: this.matrix
+    //EFFECTS: makes new row object, adds entry to log, updates GUI screen
     public void setUpNewRow(int e1) {
-        ArrayList<Integer> vals = rowEditor.getVal();
+        ArrayList<Integer> valueList = rowEditor.getVal();
         Row toInsert = new Row(columnCount);
 
         for (int i = 0; i < columnCount; i++) {
-            int tempVal = vals.get(i);
+            int tempVal = valueList.get(i);
             toInsert.setRow(i, tempVal);
         }
 
         matrix.insertMatrixRow(e1 - 1, toInsert);
-
-        //to refresh
         rowCount = matrix.getMatrixColumnSize();
-        //matrix.enterVector(e1, "Added");
 
-        //update to screen
+        matrix.enterVector(e1 - 1, "Added");
+
         refreshScreen();
     }
 
+
+    //REQUIRES: rowCount > 1
+    //EFFECTS: removes row object, adds entry to log, updates GUI screen
     public void removeRow(int e1) {
 
-        //checks this isn't last row
         if (this.rowCount > 1) {
             matrix.removeMatrixRow(e1 - 1);
             rowCount = matrix.getMatrixColumnSize();
-            //matrix.enterVector(index, "Removed");
-        }
 
-        //update to screen
+            matrix.enterVector(e1 - 1, "Removed");
+        }
         refreshScreen();
     }
 
-
-
-
-
-
-    //current WIP
-
-
-
-    //FOR TESTING BUTTONS
-    private void updateTestButton(JFrame frame) {
-        JButton advanceButton = new JButton("Load Matrix");
-        advanceButton.setActionCommand("Load Matrix");
-        advanceButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(printMatrix());
-                refreshScreen();
-
-            }
-        });
-        frame.add(advanceButton);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //CODE DIRECTLY TAKEN FROM CALCULATOR FOR JSON REASONS
 
     //EFFECTS: write both matrix and history log as JSONObject
     @Override
