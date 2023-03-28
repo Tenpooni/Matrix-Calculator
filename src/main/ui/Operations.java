@@ -89,11 +89,11 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
         JPanel p = new JPanel(new GridLayout(2, 2));
 
         entryField1 = new JFormattedTextField(numberFormat);
-        entryField1.setValue(-1);
+        entryField1.setValue(0);
         entryField1.addPropertyChangeListener(this);
 
         entryField2 = new JFormattedTextField(numberFormat);
-        entryField2.setValue(-1);
+        entryField2.setValue(0);
         entryField2.addPropertyChangeListener(this);
 
         JLabel label1 = new JLabel("Enter Row number : ");

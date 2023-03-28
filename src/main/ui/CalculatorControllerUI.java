@@ -24,6 +24,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     private Operations operationPad;
     private SupplementMenu supplementMenu;
     private Editor editor;
+    private RowEditor rowEditor;
 
     private int columnCount;
     private int rowCount;
@@ -43,14 +44,16 @@ public class CalculatorControllerUI extends JFrame implements Writable {
      */
     public CalculatorControllerUI() throws FileNotFoundException {
         frameObj = new JFrame();
-        frameObj.setLayout(new GridLayout(4,1));
+        frameObj.setLayout(new GridLayout(5,1));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         addScreen(frameObj);
         addOperationsPad(frameObj);
-        addSupplementMenu(frameObj);
         addMatrixEditor(frameObj);
+        addRowEditor(frameObj);
+        addSupplementMenu(frameObj);
+
         //checks this button can print loaded matrix.
         //updateTestButton(frameObj);
 
@@ -101,16 +104,22 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         frame.add(operationPad);
     }
 
-    private void addSupplementMenu(JFrame frame) {
-        supplementMenu = new SupplementMenu(this);
-        addKeyListener(supplementMenu);
-        frame.add(supplementMenu);
-    }
-
     private void addMatrixEditor(JFrame frame) {
         editor = new Editor(this);
         addKeyListener(editor);
         frame.add(editor);
+    }
+
+    private void addRowEditor(JFrame frame) {
+        rowEditor = new RowEditor(this);
+        addKeyListener(rowEditor);
+        frame.add(rowEditor);
+    }
+
+    private void addSupplementMenu(JFrame frame) {
+        supplementMenu = new SupplementMenu(this);
+        addKeyListener(supplementMenu);
+        frame.add(supplementMenu);
     }
 
 
@@ -123,11 +132,12 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         }
     }
 
+    //EFFECTS: matrix getter
     public Matrix getMatrix() {
         return this.matrix;
     }
 
-
+    //EFFECTS: called by Editor, creates new matrix
     public void setUpMatrixValues(int e1, int e2) {
         ArrayList<Integer> vals = editor.getVal();
 
@@ -154,6 +164,26 @@ public class CalculatorControllerUI extends JFrame implements Writable {
             matrix.setColumn(i, tempRow);
             refreshScreen();
         }
+    }
+
+
+    public void setUpNewRow(int e1) {
+        ArrayList<Integer> vals = rowEditor.getVal();
+        Row toInsert = new Row(columnCount);
+
+        for (int i = 0; i < columnCount; i++) {
+            int tempVal = vals.get(i);
+            toInsert.setRow(i, tempVal);
+        }
+
+        matrix.insertMatrixRow(e1 - 1, toInsert);
+
+        //to refresh
+        rowCount = matrix.getMatrixColumnSize();
+        //matrix.enterVector(e1, "Added");
+
+        //update to screen
+        refreshScreen();
     }
 
 

@@ -30,7 +30,7 @@ public class SupplementMenu extends JPanel implements KeyListener {
         setLayout(new BorderLayout());
         JPanel operationPanel = new JPanel();
 
-        operationPanel.setLayout(new GridLayout(1,5));
+        operationPanel.setLayout(new GridLayout(1,3));
         addButtons(operationPanel);
         add(operationPanel, BorderLayout.CENTER);
 
@@ -47,7 +47,7 @@ public class SupplementMenu extends JPanel implements KeyListener {
      * @param p  the operation panel
      */
     private void addButtons(JPanel p) {
-        keys = new JButton[5];
+        keys = new JButton[3];
 
         keys[0] = new JButton("Save");
         keys[0].addActionListener(keyHandler);
@@ -55,16 +55,10 @@ public class SupplementMenu extends JPanel implements KeyListener {
         keys[1].addActionListener(keyHandler);
         keys[2] = new JButton("History");
         keys[2].addActionListener(keyHandler);
-        keys[3] = new JButton("Test");
-        keys[3].addActionListener(keyHandler);
-        keys[4] = new JButton("Test2");
-        keys[4].addActionListener(keyHandler);
 
         p.add(keys[0]);
         p.add(keys[1]);
         p.add(keys[2]);
-        p.add(keys[3]);
-        p.add(keys[4]);
 
     }
 

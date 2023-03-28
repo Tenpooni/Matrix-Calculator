@@ -39,6 +39,7 @@ public class Screen extends JPanel {
 
     public void refreshLabel(String str) {
         label.setText(str);
+        //label.setAlignmentX(CENTER_ALIGNMENT);
         label.repaint();
     }
 
