@@ -68,11 +68,14 @@ public class SupplementMenu extends JPanel implements KeyListener {
             if (src.getText().equals("Load")) {
                 calculatorControllerGUI.loadMatrix();
                 calculatorControllerGUI.refreshScreen();
+                calculatorControllerGUI.setBlank();
             } else if (src.getText().equals("Save")) {
                 calculatorControllerGUI.saveMatrix();
                 calculatorControllerGUI.refreshScreen();
+                calculatorControllerGUI.setBlank();
             } else if (src.getText().equals("History")) {
                 calculatorControllerGUI.showHistory();
+                calculatorControllerGUI.setBlank();
             }
 
         }

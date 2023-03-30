@@ -36,6 +36,6 @@ enjoy being able to explore applications of programming to other fields.
 
 - You can generate the first required action related to adding Xs to a Y by adding or removing row objects from the matrix under the row Editor and matrix Editor menu. Choose which row in the text box by typing integers and hit the submit button.
 - You can generate the second required action related to adding Xs to a Y by reordering(swap) and performing operations on row objects through selecting rows inside the operations menu and hitting the submit button.
-- You can locate my visual component by the top panel display for a representation of the current matrix state.
+- You can locate my visual component by the top right panel display for icon representations of last row operation (add, subtract, multiply, swap)
 - You can save the state of my application by clicking the save button
 - You can reload the state of my application by clicking the load button

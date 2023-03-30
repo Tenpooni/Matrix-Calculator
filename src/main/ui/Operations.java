@@ -128,15 +128,19 @@ public class Operations extends JPanel implements KeyListener, PropertyChangeLis
             if (src.getText().equals("swap")) {
                 verifyRowSwap(r1, r2);
                 calculatorControllerGUI.refreshScreen();
+                calculatorControllerGUI.setSwap();
             } else if (src.getText().equals("-")) {
                 verifyRowSubtraction(r1, r2);
                 calculatorControllerGUI.refreshScreen();
+                calculatorControllerGUI.setSubtract();
             } else if (src.getText().equals("+")) {
                 verifyRowAddition(r1, r2);
                 calculatorControllerGUI.refreshScreen();
+                calculatorControllerGUI.setAdd();
             } else if (src.getText().equals("*")) {
                 verifyMultiply(r1, r2);
                 calculatorControllerGUI.refreshScreen();
+                calculatorControllerGUI.setMultiply();
 
             }
         }

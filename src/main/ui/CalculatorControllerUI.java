@@ -98,6 +98,32 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         screen.refreshLabel(str);
     }
 
+    //EFFECTS: changes icon to addition
+    public void setAdd() {
+        screen.addIcon();
+    }
+
+    //EFFECTS: changes icon to subtraction
+    public void setSubtract() {
+        screen.subtractIcon();
+    }
+
+    //EFFECTS: changes icon to multiplication
+    public void setMultiply() {
+        screen.multiplyIcon();
+    }
+
+    //EFFECTS: changes icon to swap
+    public void setSwap() {
+        screen.swapIcon();
+    }
+
+    //EFFECTS: changes icon to blank
+    public void setBlank() {
+        screen.blankIcon();
+    }
+
+
     //EFFECTS: prints history to screen
     public void showHistory() {
         String str = printHistory();
@@ -206,7 +232,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         rowCount = matrix.getMatrixColumnSize();
 
         matrix.enterVector(e1 - 1, "Added");
-
         refreshScreen();
     }
 
@@ -214,7 +239,6 @@ public class CalculatorControllerUI extends JFrame implements Writable {
     //REQUIRES: rowCount > 1
     //EFFECTS: removes row object, adds entry to log, updates GUI screen
     public void removeRow(int e1) {
-
         if (this.rowCount > 1) {
             matrix.removeMatrixRow(e1 - 1);
             rowCount = matrix.getMatrixColumnSize();

@@ -23,14 +23,14 @@ public class Log implements Writable {
     //MODIFIES: this
     //EFFECTS: Adds line for calculator history involving swap, addition, subtraction
     public void entryArithmetic(int r1, int r2, String operation) {
-        String line =  "R" + r1 + " " + operation + " " + "R" + r2;
+        String line =  "R" + (r1 + 1) + " " + operation + " " + "R" + (r2 + 1);
         this.logList.add(line);
     }
 
     //MODIFIES: this
     //EFFECTS: Adds line for calculator history involving multiplication
     public void entryMultiplicative(int r1, float c) {
-        String line =  "R" + r1 + " * " + c;
+        String line =  "R" + (r1 + 1) + " * " + c;
         this.logList.add(line);
     }
 

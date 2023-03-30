@@ -136,7 +136,6 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
             } else if (src.getText().equals("Submit")) {
                 if (insertingRow) {
                     if (values.size() < matrix.getMatrixRowSize()) {
-                        //advance(e2);
                         values.add(e2);
                     } else if (values.size() >= matrix.getMatrixRowSize()) {
                         calculatorControllerGUI.setUpNewRow(e1);
@@ -150,11 +149,8 @@ public class RowEditor extends JPanel implements KeyListener, PropertyChangeList
                 }
             }
 
+            calculatorControllerGUI.setBlank();
         }
-    }
-
-    private void advance(int val) {
-        values.add(val);
     }
 
 

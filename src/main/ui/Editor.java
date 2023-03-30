@@ -147,7 +147,6 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
             } else if (src.getText().equals("Submit")) {
                 if (insertingMatrix) {
                     if (values.size() < (e1 * e2)) {
-                        //advance(e3);
                         values.add(e3);
                     } else if (values.size() >= (e1 * e2)) {
                         calculatorControllerGUI.setUpMatrixValues(e1, e2);
@@ -157,13 +156,10 @@ public class Editor extends JPanel implements KeyListener, PropertyChangeListene
                 }
             }
 
+            calculatorControllerGUI.setBlank();
+
         }
     }
-
-    private void advance(int val) {
-        values.add(val);
-    }
-
 
     @Override
     public void keyPressed(KeyEvent ke) {
