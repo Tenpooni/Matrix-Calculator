@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Matrix;
 import model.Row;
 import persistence.Writable;
@@ -9,13 +11,15 @@ import persistence.JsonWriter;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 //Matrix Calculator GUI
-public class CalculatorControllerUI extends JFrame implements Writable {
+public class CalculatorControllerUI extends JFrame implements Writable, WindowListener {
     private final JFrame frameObj;
     private Screen screen;
     private Operations operationPad;
@@ -40,6 +44,8 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         frameObj.setLayout(new GridLayout(5,1));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        addWindowListener(this);
 
         addScreen(frameObj);
         addOperationsPad(frameObj);
@@ -84,7 +90,7 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         String temp = "";
 
         for (String str : matrix.getResult()) {
-            System.out.println(str);
+            //System.out.println(str);
             temp = temp + str + lineBreak;
         }
 
@@ -192,8 +198,8 @@ public class CalculatorControllerUI extends JFrame implements Writable {
         matrix.setRowCount(e1);
         matrix.setColumnCount(e2);
 
-        System.out.println(rowCount);
-        System.out.println(columnCount);
+        //System.out.println(rowCount);
+        //System.out.println(columnCount);
 
         for (int i = 0; i < rowCount; i++) {
 
@@ -264,10 +270,10 @@ public class CalculatorControllerUI extends JFrame implements Writable {
             jsonWriter.open();
             jsonWriter.write(matrix);
             jsonWriter.close();
-            System.out.println("Saved matrix to " + JSON_STORE);
+            //System.out.println("Saved matrix to " + JSON_STORE);
             //screen.refreshLabel("Saved matrix to " + JSON_STORE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            //System.out.println("Unable to write to file: " + JSON_STORE);
             //screen.refreshLabel("Unable to write to file: " + JSON_STORE);
         }
     }
@@ -282,8 +288,51 @@ public class CalculatorControllerUI extends JFrame implements Writable {
             this.columnCount = matrix.getMatrixRowSize();
 
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            //System.out.println("Unable to read from file: " + JSON_STORE);
             //screen.refreshLabel("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        //System.out.println("hello world");
+        printLogEvents(EventLog.getInstance());
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
+
+    private void printLogEvents(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next);
+            //logArea.setText(logArea.getText() + next.toString() + "\n\n");
         }
     }
 }

@@ -38,6 +38,7 @@ public class Column implements Writable {
         Row temp = this.column.get(r1);
         this.column.set(r1,this.column.get(r2));
         this.column.set(r2,temp);
+        EventLog.getInstance().logEvent(new Event("Swap row " + (r1 + 1) + " and row " + (r2 + 1)));
     }
 
     //REQUIRES: 0 < r1, r2 < rowCount
@@ -52,6 +53,8 @@ public class Column implements Writable {
             float c = toAdd.getValue(i);
             toReplace.addition(i, c);
         }
+
+        EventLog.getInstance().logEvent(new Event("Add row " + (r1 + 1) + " and row " + (r2 + 1)));
     }
 
     //REQUIRES: 0 < r1, r2 < rowCount
@@ -66,6 +69,8 @@ public class Column implements Writable {
             float c = toSubtract.getValue(i);
             toReplace.subtract(i, c);
         }
+
+        EventLog.getInstance().logEvent(new Event("Subtract row " + (r1 + 1) + " and row " + (r2 + 1)));
     }
 
     //REQUIRES: 0 < r1, r2 < rowCount
@@ -74,18 +79,21 @@ public class Column implements Writable {
     public void multiplyRow(int r1, float c) {
         Row toMultiply = this.column.get(r1);
         toMultiply.multiply(c);
+        EventLog.getInstance().logEvent(new Event("Multiply row " + (r1 + 1) + " with constant " + c));
     }
 
     //MODIFIES: this
     //EFFECTS: Remove existing row vector at index
     public void removeRow(int r) {
         this.column.remove(r);
+        EventLog.getInstance().logEvent(new Event("Removed row at position " + (r + 1)));
     }
 
     //MODIFIES: this
     //EFFECTS: Insert Row vector at index
     public void insertRow(int index, Row row) {
         this.column.add(index, row);
+        EventLog.getInstance().logEvent(new Event("Insert row at position " + (index + 1)));
     }
 
 

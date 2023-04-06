@@ -39,3 +39,17 @@ enjoy being able to explore applications of programming to other fields.
 - You can locate my visual component by the top right panel display for icon representations of last row operation (add, subtract, multiply, swap)
 - You can save the state of my application by clicking the save button
 - You can reload the state of my application by clicking the load button
+
+# Phase 4: Task 2
+- Thu Apr 06 14:46:02 PDT 2023
+- Add row 1 and row 3
+- Thu Apr 06 14:46:03 PDT 2023
+- Subtract row 1 and row 2
+- Thu Apr 06 14:46:06 PDT 2023
+- Multiply row 2 with constant 2.0
+- Thu Apr 06 14:46:10 PDT 2023
+- Swap row 3 and row 1
+- Thu Apr 06 14:46:15 PDT 2023
+- Removed row at position 1
+- Thu Apr 06 14:46:21 PDT 2023
+- Insert row at position 3
