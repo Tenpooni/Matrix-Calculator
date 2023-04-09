@@ -53,3 +53,13 @@ enjoy being able to explore applications of programming to other fields.
 - Removed row at position 1
 - Thu Apr 06 14:46:21 PDT 2023
 - Insert row at position 3
+
+# Phase 4: Task 3
+Some refactoring ideas I have for this project would be to make better use of exception throwing in classes such as Column, Row and Matrix. 
+Since these classes were made in phase 1 before learning about exceptions, they were made to run a check method on inputs for integers within certain ranges (0, arbitrary int) using if else statements rather than exceptions.
+Refactoring with exception throwing would reduce the amount of redundant methods being used for checks in the initial console UI. 
+
+Other additional refactoring I would want to implement would be to split up the main Calculator class responsible for the console UI.
+After beginning phase 3 with GUI, I realized the calculator class was handling too many distinct method/functions at the same time that could
+be better split into classes to that handle the menu, operations, history printing and save/load functions independently. This would better
+adhere to the single responsibility principle and also improve readability of the code.
