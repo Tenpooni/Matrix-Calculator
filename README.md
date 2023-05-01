@@ -1,4 +1,4 @@
-# Row operations calculator
+# Matrix calculator
 
 ========================================================
 ## Proposal: *Phase 0*
